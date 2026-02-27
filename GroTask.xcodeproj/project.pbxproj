@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */; };
+		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
 		6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454F06A282FB24A53B9BBE7B /* Assets.xcassets */; };
-		B705BF17B802D9A8549C76C2 /* GroTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */; };
+		7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,19 +25,28 @@
 
 /* Begin PBXFileReference section */
 		0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
+		1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
 		454F06A282FB24A53B9BBE7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskTests.swift; sourceTree = "<group>"; };
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		010946E06CF7B079A7EE8104 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		731F0AF78A66C07B1BA259C3 /* GroTaskTests */ = {
 			isa = PBXGroup;
 			children = (
-				8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */,
+				2141248232CADE602127871F /* TaskItemTests.swift */,
 			);
 			path = GroTaskTests;
 			sourceTree = "<group>";
@@ -48,6 +58,7 @@
 				F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */,
 				0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */,
 				F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */,
+				010946E06CF7B079A7EE8104 /* Models */,
 			);
 			path = GroTask;
 			sourceTree = "<group>";
@@ -154,7 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B705BF17B802D9A8549C76C2 /* GroTaskTests.swift in Sources */,
+				6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,6 +174,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */,
+				7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,6 +194,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -292,6 +305,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

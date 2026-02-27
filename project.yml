@@ -50,5 +50,6 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.grotask.tests
+        GENERATE_INFOPLIST_FILE: "YES"
         TEST_HOST: "$(BUILT_PRODUCTS_DIR)/GroTask.app/Contents/MacOS/GroTask"
         BUNDLE_LOADER: "$(TEST_HOST)"
