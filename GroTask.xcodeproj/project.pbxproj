@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */; };
+		47E4A28A7DDEC2FC8669D064 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40926EC0D49086A9D586661C /* TaskRowView.swift */; };
 		654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF51E471AB34D7C991846503 /* TaskStoreTests.swift */; };
 		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
 		6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454F06A282FB24A53B9BBE7B /* Assets.xcassets */; };
 		7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */; };
+		B70AF8D4028E7B99609FC9C5 /* StatusCycleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7891ACB2D4CC6B285639E09E /* StatusCycleButton.swift */; };
 		DF9301A35195FC7B6FBE3A50 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293322D2E6DD41181885DB63 /* TaskStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,8 +32,10 @@
 		1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
 		293322D2E6DD41181885DB63 /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		40926EC0D49086A9D586661C /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		454F06A282FB24A53B9BBE7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7891ACB2D4CC6B285639E09E /* StatusCycleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusCycleButton.swift; sourceTree = "<group>"; };
 		DF51E471AB34D7C991846503 /* TaskStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStoreTests.swift; sourceTree = "<group>"; };
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +49,15 @@
 				1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2BA5A868ECF4BA349E59520A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7891ACB2D4CC6B285639E09E /* StatusCycleButton.swift */,
+				40926EC0D49086A9D586661C /* TaskRowView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		731F0AF78A66C07B1BA259C3 /* GroTaskTests */ = {
@@ -65,6 +78,7 @@
 				F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */,
 				010946E06CF7B079A7EE8104 /* Models */,
 				E3AB2252E61EFE306451F745 /* ViewModels */,
+				2BA5A868ECF4BA349E59520A /* Views */,
 			);
 			path = GroTask;
 			sourceTree = "<group>";
@@ -189,7 +203,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */,
+				B70AF8D4028E7B99609FC9C5 /* StatusCycleButton.swift in Sources */,
 				7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */,
+				47E4A28A7DDEC2FC8669D064 /* TaskRowView.swift in Sources */,
 				DF9301A35195FC7B6FBE3A50 /* TaskStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +321,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -384,7 +400,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
