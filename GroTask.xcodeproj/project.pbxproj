@@ -1,0 +1,402 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */; };
+		6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454F06A282FB24A53B9BBE7B /* Assets.xcassets */; };
+		B705BF17B802D9A8549C76C2 /* GroTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8B5C54B51B464436B713224B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 27EBD471BAEFEA73C3439FDA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A66F0F0530D2B2414E8CF94;
+			remoteInfo = GroTask;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
+		454F06A282FB24A53B9BBE7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskTests.swift; sourceTree = "<group>"; };
+		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		731F0AF78A66C07B1BA259C3 /* GroTaskTests */ = {
+			isa = PBXGroup;
+			children = (
+				8A278A4B3B502EC00C5F99CF /* GroTaskTests.swift */,
+			);
+			path = GroTaskTests;
+			sourceTree = "<group>";
+		};
+		A627FC816C9BDD8DF179A355 /* GroTask */ = {
+			isa = PBXGroup;
+			children = (
+				454F06A282FB24A53B9BBE7B /* Assets.xcassets */,
+				F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */,
+				0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */,
+				F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */,
+			);
+			path = GroTask;
+			sourceTree = "<group>";
+		};
+		C13E1011C205E188E8297A76 = {
+			isa = PBXGroup;
+			children = (
+				A627FC816C9BDD8DF179A355 /* GroTask */,
+				731F0AF78A66C07B1BA259C3 /* GroTaskTests */,
+				E264CDDC6D94411158504DC7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E264CDDC6D94411158504DC7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */,
+				5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2A66F0F0530D2B2414E8CF94 /* GroTask */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5813AD45705C55E01D6E7C6C /* Build configuration list for PBXNativeTarget "GroTask" */;
+			buildPhases = (
+				ACD53E957C0C644AB6CF77A4 /* Sources */,
+				F289D85551FD4F866A7A5156 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GroTask;
+			packageProductDependencies = (
+			);
+			productName = GroTask;
+			productReference = ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */;
+			productType = "com.apple.product-type.application";
+		};
+		61D24765E1E3FD83C2656C84 /* GroTaskTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CBB5DC27AD4CC1241FB9F75 /* Build configuration list for PBXNativeTarget "GroTaskTests" */;
+			buildPhases = (
+				3F2EA42E027F20CB69095946 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2F2FA8ED4C0C206F3536918F /* PBXTargetDependency */,
+			);
+			name = GroTaskTests;
+			packageProductDependencies = (
+			);
+			productName = GroTaskTests;
+			productReference = 5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		27EBD471BAEFEA73C3439FDA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+			};
+			buildConfigurationList = EB1367A8AEDBD3E5D70F2132 /* Build configuration list for PBXProject "GroTask" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C13E1011C205E188E8297A76;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A66F0F0530D2B2414E8CF94 /* GroTask */,
+				61D24765E1E3FD83C2656C84 /* GroTaskTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F289D85551FD4F866A7A5156 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F2EA42E027F20CB69095946 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B705BF17B802D9A8549C76C2 /* GroTaskTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		ACD53E957C0C644AB6CF77A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2F2FA8ED4C0C206F3536918F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2A66F0F0530D2B2414E8CF94 /* GroTask */;
+			targetProxy = 8B5C54B51B464436B713224B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1F9C1EE1101505471530155C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GroTask.app/Contents/MacOS/GroTask";
+			};
+			name = Release;
+		};
+		280898454F312759E3EC0C35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GroTask/GroTask.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = GroTask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
+				PRODUCT_NAME = GroTask;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		297B1D17BB45AA23A0CA335D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GroTask/GroTask.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = GroTask/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
+				PRODUCT_NAME = GroTask;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		33CBB11BE24AAF1ECFFF07B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		4DEA985456EA7FC138F139BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.tests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GroTask.app/Contents/MacOS/GroTask";
+			};
+			name = Debug;
+		};
+		CBC961B16D007474CF34E329 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5813AD45705C55E01D6E7C6C /* Build configuration list for PBXNativeTarget "GroTask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				280898454F312759E3EC0C35 /* Debug */,
+				297B1D17BB45AA23A0CA335D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8CBB5DC27AD4CC1241FB9F75 /* Build configuration list for PBXNativeTarget "GroTaskTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4DEA985456EA7FC138F139BA /* Debug */,
+				1F9C1EE1101505471530155C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EB1367A8AEDBD3E5D70F2132 /* Build configuration list for PBXProject "GroTask" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CBC961B16D007474CF34E329 /* Debug */,
+				33CBB11BE24AAF1ECFFF07B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 27EBD471BAEFEA73C3439FDA /* Project object */;
+}
