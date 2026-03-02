@@ -25,5 +25,12 @@ struct PersistenceController {
 
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
+        // 在 debug 模式下自动初始化 CloudKit schema
+        #if DEBUG
+        if cloudKit, let cloudKitContainer = container as? NSPersistentCloudKitContainer {
+            try? cloudKitContainer.initializeCloudKitSchema(options: [])
+        }
+        #endif
     }
 }

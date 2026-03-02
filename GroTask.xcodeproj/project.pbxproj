@@ -45,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		038E30A32F55460A005F4721 /* GroTaskiOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GroTaskiOS-Info.plist"; sourceTree = "<group>"; };
 		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
 		267C00A14A49DF32FFB5E4BF /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38986F812FFD0CDDD8448612 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		C13E1011C205E188E8297A76 = {
 			isa = PBXGroup;
 			children = (
+				038E30A32F55460A005F4721 /* GroTaskiOS-Info.plist */,
 				731F0AF78A66C07B1BA259C3 /* GroTaskTests */,
 				0891FB10760865AFB637220E /* iOS */,
 				2AB182F80E49216A07D227C7 /* macOS */,
@@ -252,7 +254,6 @@
 						ProvisioningStyle = Automatic;
 					};
 					61D24765E1E3FD83C2656C84 = {
-						DevelopmentTeam = 6JX28238AJ;
 						ProvisioningStyle = Automatic;
 					};
 					B341E944338FF6D6750EEFCF = {
@@ -360,6 +361,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -474,6 +476,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -495,6 +498,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GroTaskiOS-Info.plist";
+				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -521,6 +526,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "GroTaskiOS-Info.plist";
+				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

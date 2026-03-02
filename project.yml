@@ -62,6 +62,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         GENERATE_INFOPLIST_FILE: "YES"
         SWIFT_VERSION: "5.9"
+        INFOPLIST_KEY_UIBackgroundModes: remote-notification
 
   GroTaskTests:
     type: bundle.unit-test
