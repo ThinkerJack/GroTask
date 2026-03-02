@@ -21,14 +21,15 @@ struct iOSTaskRowView: View {
             HStack(spacing: 10) {
                 // 状态指示
                 if task.status == .todo {
-                    Circle()
-                        .fill(task.category.color)
-                        .frame(width: 10, height: 10)
+                    Image(systemName: "circle")
+                        .font(.body)
+                        .foregroundStyle(task.category.color)
                         .accessibilityHidden(true)
                 } else {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.body)
                         .foregroundStyle(Color(.systemGreen))
+                        .symbolEffect(.bounce, value: task.status == .done)
                         .accessibilityHidden(true)
                 }
 
