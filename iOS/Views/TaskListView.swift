@@ -105,6 +105,12 @@ struct TaskListView: View {
                     store.updateTitle(id: task.id, newTitle: newTitle)
                 }
             )
+            .transition(
+                .asymmetric(
+                    insertion: .opacity.combined(with: .move(edge: .top)),
+                    removal: .opacity
+                )
+            )
         }
     }
 
