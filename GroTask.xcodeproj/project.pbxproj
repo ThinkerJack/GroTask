@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */; };
-		47E4A28A7DDEC2FC8669D064 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40926EC0D49086A9D586661C /* TaskRowView.swift */; };
+		01744395373BF734FD123285 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84904FC4FD60834E858CFE2 /* TaskItem.swift */; };
+		1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */; };
+		31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */; };
+		3C28BE3C5973837A19537538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E393D8D9937DA1CFFF018112 /* Assets.xcassets */; };
+		46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */; };
+		4D323EA46F760123F4A1309A /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8827D1C32300857B3493AE /* TaskStore.swift */; };
+		5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CC809292CBE298873BED7 /* TaskRowView.swift */; };
 		654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF51E471AB34D7C991846503 /* TaskStoreTests.swift */; };
 		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
-		6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 454F06A282FB24A53B9BBE7B /* Assets.xcassets */; };
-		7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */; };
-		B438717721588997858CBEB0 /* TaskPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5B5F61FFF0908AD3CC7299 /* TaskPopoverView.swift */; };
-		DF9301A35195FC7B6FBE3A50 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 293322D2E6DD41181885DB63 /* TaskStore.swift */; };
-		EEAEBC8BD1B6A27803B01491 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AACFA6210BEA8C9961757A4B /* FloatingPanel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,38 +29,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
-		1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
-		293322D2E6DD41181885DB63 /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
-		40926EC0D49086A9D586661C /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
-		454F06A282FB24A53B9BBE7B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3DE3F077CD6119E2333F36E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9C5B5F61FFF0908AD3CC7299 /* TaskPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPopoverView.swift; sourceTree = "<group>"; };
-		AACFA6210BEA8C9961757A4B /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
+		6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
+		6A8827D1C32300857B3493AE /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPopoverView.swift; sourceTree = "<group>"; };
+		987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
+		997CC809292CBE298873BED7 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		C81785A94AA146C40B74A443 /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
+		C84904FC4FD60834E858CFE2 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		DF51E471AB34D7C991846503 /* TaskStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStoreTests.swift; sourceTree = "<group>"; };
+		E393D8D9937DA1CFFF018112 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		010946E06CF7B079A7EE8104 /* Models */ = {
+		2AB182F80E49216A07D227C7 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
-				1195E1F7EEA99B6FFAF611FD /* TaskItem.swift */,
+				C81785A94AA146C40B74A443 /* GroTask.entitlements */,
+				987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */,
+				3DE3F077CD6119E2333F36E7 /* Info.plist */,
+				E799097E58E86CE1BCAA3DF9 /* Views */,
 			);
-			path = Models;
+			path = macOS;
 			sourceTree = "<group>";
 		};
-		2BA5A868ECF4BA349E59520A /* Views */ = {
+		43B2D4B9A0EDD3A181BCB377 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				AACFA6210BEA8C9961757A4B /* FloatingPanel.swift */,
-				9C5B5F61FFF0908AD3CC7299 /* TaskPopoverView.swift */,
-				40926EC0D49086A9D586661C /* TaskRowView.swift */,
+				6A8827D1C32300857B3493AE /* TaskStore.swift */,
 			);
-			path = Views;
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		731F0AF78A66C07B1BA259C3 /* GroTaskTests */ = {
@@ -72,27 +73,33 @@
 			path = GroTaskTests;
 			sourceTree = "<group>";
 		};
-		A627FC816C9BDD8DF179A355 /* GroTask */ = {
-			isa = PBXGroup;
-			children = (
-				454F06A282FB24A53B9BBE7B /* Assets.xcassets */,
-				F767FCAB99E1D52D70B8CBAF /* GroTask.entitlements */,
-				0FA970EBBFA92FCF6FB7CE51 /* GroTaskApp.swift */,
-				F2BE8EB9A670DE5E2C97F6E1 /* Info.plist */,
-				010946E06CF7B079A7EE8104 /* Models */,
-				E3AB2252E61EFE306451F745 /* ViewModels */,
-				2BA5A868ECF4BA349E59520A /* Views */,
-			);
-			path = GroTask;
-			sourceTree = "<group>";
-		};
 		C13E1011C205E188E8297A76 = {
 			isa = PBXGroup;
 			children = (
-				A627FC816C9BDD8DF179A355 /* GroTask */,
 				731F0AF78A66C07B1BA259C3 /* GroTaskTests */,
+				2AB182F80E49216A07D227C7 /* macOS */,
+				DC0008958E55FDF92B95E703 /* Shared */,
 				E264CDDC6D94411158504DC7 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		D06A3E41FF9D44A952BB4E6E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C84904FC4FD60834E858CFE2 /* TaskItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		DC0008958E55FDF92B95E703 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				E393D8D9937DA1CFFF018112 /* Assets.xcassets */,
+				D06A3E41FF9D44A952BB4E6E /* Models */,
+				FA29D309337AD1148CF52EF6 /* Persistence */,
+				43B2D4B9A0EDD3A181BCB377 /* ViewModels */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		E264CDDC6D94411158504DC7 /* Products */ = {
@@ -104,12 +111,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E3AB2252E61EFE306451F745 /* ViewModels */ = {
+		E799097E58E86CE1BCAA3DF9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				293322D2E6DD41181885DB63 /* TaskStore.swift */,
+				6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */,
+				7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */,
+				997CC809292CBE298873BED7 /* TaskRowView.swift */,
 			);
-			path = ViewModels;
+			path = Views;
+			sourceTree = "<group>";
+		};
+		FA29D309337AD1148CF52EF6 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Persistence;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,7 +201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AE6CEB1C25C4D6E4C2F02D0 /* Assets.xcassets in Resources */,
+				3C28BE3C5973837A19537538 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,12 +221,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEAEBC8BD1B6A27803B01491 /* FloatingPanel.swift in Sources */,
-				444E9598C82CD3079A455074 /* GroTaskApp.swift in Sources */,
-				7D94CB60CA118814183AD94F /* TaskItem.swift in Sources */,
-				B438717721588997858CBEB0 /* TaskPopoverView.swift in Sources */,
-				47E4A28A7DDEC2FC8669D064 /* TaskRowView.swift in Sources */,
-				DF9301A35195FC7B6FBE3A50 /* TaskStore.swift in Sources */,
+				1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */,
+				31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */,
+				01744395373BF734FD123285 /* TaskItem.swift in Sources */,
+				46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */,
+				5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */,
+				4D323EA46F760123F4A1309A /* TaskStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,10 +262,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = GroTask/GroTask.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = GroTask/Info.plist;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -265,10 +281,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = GroTask/GroTask.entitlements;
+				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = GroTask/Info.plist;
+				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
