@@ -17,7 +17,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let store: TaskStore
 
     override init() {
-        self.store = TaskStore(context: PersistenceController.shared.container.viewContext)
+        // 触发迁移
+        MigrationHelper.migrateIfNeeded(context: PersistenceController.shared.container.viewContext)
+        self.store = TaskStore()
         super.init()
     }
 
