@@ -13,59 +13,63 @@ struct TaskRowView: View {
     @FocusState private var isEditFocused: Bool
 
     var body: some View {
-        HStack(spacing: 8) {
-            leadingButton
-
-            VStack(alignment: .leading, spacing: 1) {
-                if isEditing {
-                    TextField("任务标题", text: $editingTitle)
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 13))
-                        .focused($isEditFocused)
-                        .onSubmit { commitEdit() }
-                        .onExitCommand { cancelEdit() }
-                } else {
-                    Text(task.title)
-                        .font(.system(size: 13))
-                        .foregroundStyle(task.status == .done ? .tertiary : .primary)
-                        .strikethrough(task.status == .done, color: Color.secondary.opacity(0.5))
-                        .lineLimit(2)
-                }
-
-                if task.status == .done, let completedAt = task.completedAt {
-                    Text(completedAt, format: .dateTime.hour().minute())
-                        .font(.system(size: 11))
-                        .foregroundStyle(.quaternary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            if isHovered && !isEditing {
-                Button(action: onDelete) {
-                    Image(systemName: "trash")
-                        .font(.system(size: 11))
-                        .foregroundStyle(.tertiary)
-                }
-                .buttonStyle(.plain)
-                .transition(.opacity)
-                .help("删除任务")
-            }
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
-        .background(
-            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(rowBackground)
-        )
-        .contentShape(Rectangle())
-        .onTapGesture {
+        Button {
             if isEditing { return }
             if task.status == .todo {
                 withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
                     onCycleStatus()
                 }
             }
+        } label: {
+            HStack(spacing: 8) {
+                leadingButton
+
+                VStack(alignment: .leading, spacing: 1) {
+                    if isEditing {
+                        TextField("任务标题", text: $editingTitle)
+                            .textFieldStyle(.plain)
+                            .font(.body)
+                            .focused($isEditFocused)
+                            .onSubmit { commitEdit() }
+                            .onExitCommand { cancelEdit() }
+                    } else {
+                        Text(task.title)
+                            .font(.body)
+                            .foregroundStyle(task.status == .done ? .tertiary : .primary)
+                            .strikethrough(task.status == .done, color: Color.secondary.opacity(0.5))
+                            .lineLimit(2)
+                    }
+
+                    if task.status == .done, let completedAt = task.completedAt {
+                        Text(completedAt, format: .dateTime.hour().minute())
+                            .font(.caption)
+                            .foregroundStyle(.quaternary)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                if isHovered && !isEditing {
+                    Button(action: onDelete) {
+                        Image(systemName: "trash")
+                            .font(.caption)
+                            .foregroundStyle(.tertiary)
+                    }
+                    .buttonStyle(.plain)
+                    .transition(.opacity)
+                    .help("删除任务")
+                }
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(rowBackground)
+            )
+            .contentShape(Rectangle())
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel(task.title)
+        .accessibilityValue("\(task.category.label)，\(task.status.label)")
         .contextMenu {
             if task.status == .todo {
                 Button {
@@ -146,9 +150,9 @@ struct TaskRowView: View {
                         .frame(width: 24, height: 24)
                         .animation(.easeInOut(duration: 0.1), value: isHovered)
 
-                    Circle()
-                        .fill(task.category.color)
-                        .frame(width: 8, height: 8)
+                    Image(systemName: "circle")
+                        .font(.body)
+                        .foregroundStyle(task.category.color)
                 }
             }
             .buttonStyle(.plain)
@@ -163,9 +167,10 @@ struct TaskRowView: View {
                         .animation(.easeInOut(duration: 0.1), value: isHovered)
 
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 15, weight: .regular))
+                        .font(.body)
                         .foregroundStyle(Color(.systemGreen))
                         .symbolRenderingMode(.hierarchical)
+                        .symbolEffect(.bounce, value: task.status == .done)
                 }
             }
             .buttonStyle(.plain)
