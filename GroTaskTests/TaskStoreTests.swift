@@ -1,21 +1,22 @@
 import XCTest
+import CoreData
 @testable import GroTask
 
 final class TaskStoreTests: XCTestCase {
 
-    var tempDir: URL!
     var store: TaskStore!
+    var context: NSManagedObjectContext!
 
     override func setUp() {
         super.setUp()
-        tempDir = FileManager.default.temporaryDirectory
-            .appendingPathComponent(UUID().uuidString)
-        try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
-        store = TaskStore(directory: tempDir)
+        let controller = PersistenceController(inMemory: true)
+        context = controller.container.viewContext
+        store = TaskStore(context: context)
     }
 
     override func tearDown() {
-        try? FileManager.default.removeItem(at: tempDir)
+        store = nil
+        context = nil
         super.tearDown()
     }
 
@@ -99,7 +100,6 @@ final class TaskStoreTests: XCTestCase {
     func testDoneTasks() {
         store.addTask(title: "Done task")
         store.addTask(title: "Todo task")
-        // addTask prepends, so tasks[1] is "Done task"
         store.cycleStatus(id: store.tasks[1].id)
 
         XCTAssertEqual(store.doneTasks.count, 1)
@@ -112,28 +112,7 @@ final class TaskStoreTests: XCTestCase {
         store.togglePin(id: id)
         store.cycleStatus(id: id)
 
-        // Done tasks should not appear in pinnedTasks
         XCTAssertEqual(store.pinnedTasks.count, 0)
         XCTAssertEqual(store.doneTasks.count, 1)
-    }
-
-    func testPersistenceRoundTrip() {
-        store.addTask(title: "Persist me", category: .life)
-        store.addTask(title: "Me too")
-
-        let store2 = TaskStore(directory: tempDir)
-        XCTAssertEqual(store2.tasks.count, 2)
-        XCTAssertEqual(store2.tasks.map(\.title).sorted(), ["Me too", "Persist me"])
-    }
-
-    func testCorruptFileRecovery() throws {
-        let filePath = tempDir.appendingPathComponent("tasks.json")
-        try "not valid json{{{".write(to: filePath, atomically: true, encoding: .utf8)
-
-        let recoveredStore = TaskStore(directory: tempDir)
-        XCTAssertEqual(recoveredStore.tasks.count, 0)
-
-        let backupPath = tempDir.appendingPathComponent("tasks.json.bak")
-        XCTAssertTrue(FileManager.default.fileExists(atPath: backupPath.path))
     }
 }

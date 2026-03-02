@@ -1,85 +1,110 @@
 import Foundation
+import CoreData
 import SwiftUI
 
 @Observable
 final class TaskStore {
 
     private(set) var tasks: [TaskItem] = []
-    private let fileURL: URL
+    private let context: NSManagedObjectContext
 
     convenience init() {
-        let appSupport = FileManager.default.urls(
-            for: .applicationSupportDirectory,
-            in: .userDomainMask
-        ).first!
-        let dir = appSupport.appendingPathComponent("GroTask", isDirectory: true)
-        self.init(directory: dir)
+        self.init(context: PersistenceController.shared.container.viewContext)
     }
 
-    init(directory: URL) {
-        let fm = FileManager.default
-        if !fm.fileExists(atPath: directory.path) {
-            try? fm.createDirectory(at: directory, withIntermediateDirectories: true)
+    init(context: NSManagedObjectContext) {
+        self.context = context
+        fetchAll()
+
+        // 监听远端同步变更
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(contextDidChange),
+            name: .NSManagedObjectContextObjectsDidChange, object: context
+        )
+    }
+
+    @objc private func contextDidChange(_ notification: Notification) {
+        fetchAll()
+    }
+
+    // MARK: - Fetch
+
+    private func fetchAll() {
+        let request = NSFetchRequest<TaskItemEntity>(entityName: "TaskItemEntity")
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TaskItemEntity.createdAt, ascending: false)]
+        do {
+            let entities = try context.fetch(request)
+            tasks = entities.map { $0.toTaskItem() }
+        } catch {
+            print("TaskStore fetch failed: \(error)")
+            tasks = []
         }
-        self.fileURL = directory.appendingPathComponent("tasks.json")
-        self.tasks = Self.load(from: fileURL)
     }
 
     // MARK: - CRUD
 
     func addTask(title: String, category: TaskCategory = .work) {
-        let task = TaskItem(title: title, category: category)
-        tasks.insert(task, at: 0)
+        let entity = TaskItemEntity(context: context)
+        entity.id = UUID()
+        entity.title = title
+        entity.statusRaw = Int16(TaskStatus.todo.rawValue)
+        entity.categoryRaw = category == .work ? 0 : 1
+        entity.isPinned = false
+        entity.createdAt = Date()
+        entity.completedAt = nil
         save()
     }
 
     func deleteTask(id: UUID) {
-        tasks.removeAll { $0.id == id }
+        guard let entity = findEntity(id: id) else { return }
+        context.delete(entity)
         save()
     }
 
     func cycleStatus(id: UUID) {
-        guard let index = tasks.firstIndex(where: { $0.id == id }) else { return }
-        tasks[index].cycleStatus()
+        guard let entity = findEntity(id: id) else { return }
+        let currentStatus = entity.status
+        entity.status = currentStatus.next
+        if entity.status == .done {
+            entity.completedAt = Date()
+        } else {
+            entity.completedAt = nil
+        }
         save()
     }
 
     func togglePin(id: UUID) {
-        guard let index = tasks.firstIndex(where: { $0.id == id }) else { return }
-        tasks[index].isPinned.toggle()
+        guard let entity = findEntity(id: id) else { return }
+        entity.isPinned.toggle()
         save()
     }
 
     func toggleCategory(id: UUID) {
-        guard let index = tasks.firstIndex(where: { $0.id == id }) else { return }
-        tasks[index].category = tasks[index].category.next
+        guard let entity = findEntity(id: id) else { return }
+        entity.category = entity.category.next
         save()
     }
 
     // MARK: - Grouped Queries
 
-    /// Pinned todo tasks (今天)
     var pinnedTasks: [TaskItem] {
         tasks
             .filter { $0.isPinned && $0.status == .todo }
             .sorted { $0.createdAt > $1.createdAt }
     }
 
-    /// Unpinned todo tasks (待办)
     var unpinnedTasks: [TaskItem] {
         tasks
             .filter { !$0.isPinned && $0.status == .todo }
             .sorted { $0.createdAt > $1.createdAt }
     }
 
-    /// Done tasks (已完成)
     var doneTasks: [TaskItem] {
         tasks
             .filter { $0.status == .done }
             .sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
     }
 
-    // Keep for backward compat with tests
     func tasks(for status: TaskStatus) -> [TaskItem] {
         let filtered = tasks.filter { $0.status == status }
         if status == .done {
@@ -90,31 +115,22 @@ final class TaskStore {
         return filtered.sorted { $0.createdAt > $1.createdAt }
     }
 
-    // MARK: - Persistence
+    // MARK: - Private
 
-    private func save() {
-        let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        guard let data = try? encoder.encode(tasks) else { return }
-        try? data.write(to: fileURL, options: .atomic)
+    private func findEntity(id: UUID) -> TaskItemEntity? {
+        let request = NSFetchRequest<TaskItemEntity>(entityName: "TaskItemEntity")
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        request.fetchLimit = 1
+        return try? context.fetch(request).first
     }
 
-    static func load(from url: URL) -> [TaskItem] {
-        guard FileManager.default.fileExists(atPath: url.path) else { return [] }
-        guard let data = try? Data(contentsOf: url) else { return [] }
-
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-
+    private func save() {
+        guard context.hasChanges else { return }
         do {
-            return try decoder.decode([TaskItem].self, from: data)
+            try context.save()
+            fetchAll()
         } catch {
-            print("TaskStore: JSON decode failed, backing up corrupt file: \(error)")
-            let backupURL = url.appendingPathExtension("bak")
-            try? FileManager.default.removeItem(at: backupURL)
-            try? FileManager.default.copyItem(at: url, to: backupURL)
-            return []
+            print("TaskStore save failed: \(error)")
         }
     }
 }

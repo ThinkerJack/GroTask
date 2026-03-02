@@ -14,7 +14,12 @@ struct GroTaskApp: App {
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem!
     private var panel: FloatingPanel!
-    private let store = TaskStore()
+    private let store: TaskStore
+
+    override init() {
+        self.store = TaskStore(context: PersistenceController.shared.container.viewContext)
+        super.init()
+    }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupStatusItem()

@@ -6,14 +6,16 @@ struct PersistenceController {
     /// 生产环境使用 CloudKit 容器
     static let shared = PersistenceController()
 
-    init(inMemory: Bool = false) {
+    init(inMemory: Bool = false, cloudKit: Bool = false) {
         if inMemory {
             container = NSPersistentContainer(name: "GroTask")
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
-        } else {
+        } else if cloudKit {
             container = NSPersistentCloudKitContainer(name: "GroTask")
             container.persistentStoreDescriptions.first?.cloudKitContainerOptions =
                 NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.grotask.app")
+        } else {
+            container = NSPersistentContainer(name: "GroTask")
         }
 
         container.loadPersistentStores { _, error in
