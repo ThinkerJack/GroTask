@@ -3,9 +3,7 @@ import CoreData
 struct PersistenceController {
     let container: NSPersistentContainer
 
-    /// 生产环境使用 CloudKit 容器
-    /// CloudKit 同步需要配置签名后启用: PersistenceController(cloudKit: true)
-    static let shared = PersistenceController()
+    static let shared = PersistenceController(cloudKit: true)
 
     init(inMemory: Bool = false, cloudKit: Bool = false) {
         if inMemory {
