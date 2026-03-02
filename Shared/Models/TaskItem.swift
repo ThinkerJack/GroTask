@@ -25,6 +25,13 @@ enum TaskCategory: String, CaseIterable, Identifiable, Codable {
         case .life: return "生活"
         }
     }
+
+    var symbolName: String {
+        switch self {
+        case .work: return "briefcase.fill"
+        case .life: return "leaf.fill"
+        }
+    }
 }
 
 // MARK: - TaskStatus
