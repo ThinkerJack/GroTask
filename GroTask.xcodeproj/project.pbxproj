@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,10 +12,12 @@
 		31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */; };
 		3C28BE3C5973837A19537538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E393D8D9937DA1CFFF018112 /* Assets.xcassets */; };
 		46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */; };
+		4C4DCE848364F91095F115C6 /* GroTask.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */; };
 		4D323EA46F760123F4A1309A /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8827D1C32300857B3493AE /* TaskStore.swift */; };
 		5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CC809292CBE298873BED7 /* TaskRowView.swift */; };
 		654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF51E471AB34D7C991846503 /* TaskStoreTests.swift */; };
 		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
+		AEF04906BDC6E7B5605A3EA9 /* TaskItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14A231275670B1AA533834C /* TaskItemEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,11 +39,13 @@
 		7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPopoverView.swift; sourceTree = "<group>"; };
 		987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
 		997CC809292CBE298873BED7 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		B14A231275670B1AA533834C /* TaskItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemEntity.swift; sourceTree = "<group>"; };
 		C81785A94AA146C40B74A443 /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
 		C84904FC4FD60834E858CFE2 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
 		DF51E471AB34D7C991846503 /* TaskStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStoreTests.swift; sourceTree = "<group>"; };
 		E393D8D9937DA1CFFF018112 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9D4462948A6E5A082B30489 /* GroTask.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GroTask.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -124,6 +128,8 @@
 		FA29D309337AD1148CF52EF6 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */,
+				B14A231275670B1AA533834C /* TaskItemEntity.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -186,7 +192,6 @@
 			);
 			mainGroup = C13E1011C205E188E8297A76;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -222,8 +227,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */,
+				4C4DCE848364F91095F115C6 /* GroTask.xcdatamodeld in Sources */,
 				31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */,
 				01744395373BF734FD123285 /* TaskItem.swift in Sources */,
+				AEF04906BDC6E7B5605A3EA9 /* TaskItemEntity.swift in Sources */,
 				46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */,
 				5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */,
 				4D323EA46F760123F4A1309A /* TaskStore.swift in Sources */,
@@ -263,8 +270,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -273,6 +284,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
 				PRODUCT_NAME = GroTask;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -282,8 +294,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -292,6 +308,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
 				PRODUCT_NAME = GroTask;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -463,6 +480,19 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				F9D4462948A6E5A082B30489 /* GroTask.xcdatamodel */,
+			);
+			currentVersion = F9D4462948A6E5A082B30489 /* GroTask.xcdatamodel */;
+			path = GroTask.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 27EBD471BAEFEA73C3439FDA /* Project object */;
 }

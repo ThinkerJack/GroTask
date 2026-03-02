@@ -68,6 +68,17 @@ struct TaskItem: Identifiable, Codable, Equatable {
         self.completedAt = nil
     }
 
+    init(id: UUID, title: String, status: TaskStatus, category: TaskCategory,
+         isPinned: Bool, createdAt: Date, completedAt: Date?) {
+        self.id = id
+        self.title = title
+        self.status = status
+        self.category = category
+        self.isPinned = isPinned
+        self.createdAt = createdAt
+        self.completedAt = completedAt
+    }
+
     mutating func cycleStatus() {
         status = status.next
         if status == .done {
