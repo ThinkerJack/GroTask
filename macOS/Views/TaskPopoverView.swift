@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TaskPopoverView: View {
-    @State var store: TaskStore
+    var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
     @State private var isDoneExpanded = false
@@ -12,7 +12,7 @@ struct TaskPopoverView: View {
             // Header
             HStack {
                 Text("GroTask")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.headline)
                     .foregroundStyle(.primary)
 
                 Spacer()
@@ -21,11 +21,12 @@ struct TaskPopoverView: View {
                     isInputFocused = true
                 } label: {
                     Image(systemName: "plus.circle")
-                        .font(.system(size: 16))
+                        .font(.body)
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
                 .help("添加新任务")
+                .accessibilityLabel("添加新任务")
             }
             .padding(.horizontal, 16)
             .padding(.top, 4)
@@ -37,10 +38,10 @@ struct TaskPopoverView: View {
             if store.tasks.isEmpty {
                 VStack(spacing: 8) {
                     Image(systemName: "checkmark.circle")
-                        .font(.system(size: 28))
+                        .font(.title)
                         .foregroundStyle(.quaternary)
                     Text("暂无任务")
-                        .font(.system(size: 12))
+                        .font(.caption)
                         .foregroundStyle(.tertiary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -86,12 +87,13 @@ struct TaskPopoverView: View {
                         .frame(width: 8, height: 8)
                 }
                 .buttonStyle(.plain)
-                .frame(width: 16, height: 16)
+                .frame(width: 24, height: 24)
                 .help(newTaskCategory.label)
+                .accessibilityLabel("类别：\(newTaskCategory.label)")
 
                 TextField("新任务...", text: $newTaskTitle)
                     .textFieldStyle(.plain)
-                    .font(.system(size: 13))
+                    .font(.body)
                     .focused($isInputFocused)
                     .onSubmit {
                         addTask()
@@ -107,7 +109,7 @@ struct TaskPopoverView: View {
                     NSApplication.shared.terminate(nil)
                 }
                 .buttonStyle(.plain)
-                .font(.system(size: 11))
+                .font(.footnote)
                 .foregroundStyle(.tertiary)
             }
             .padding(.horizontal, 16)
@@ -159,20 +161,20 @@ struct TaskPopoverView: View {
     private func pinnedSectionHeader(count: Int) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "pin.fill")
-                .font(.system(size: 8))
+                .font(.caption2)
                 .foregroundStyle(.tertiary)
             Text("今天".uppercased())
-                .font(.system(size: 10, weight: .semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundStyle(.tertiary)
                 .tracking(0.5)
 
             Spacer()
 
             Text("\(count)")
-                .font(.system(size: 10, weight: .medium))
+                .font(.caption2.weight(.medium))
                 .foregroundStyle(.quaternary)
         }
-        .padding(.horizontal, 18)
+        .padding(.horizontal, 16)
         .padding(.top, 10)
         .padding(.bottom, 4)
     }
@@ -185,23 +187,25 @@ struct TaskPopoverView: View {
         } label: {
             HStack {
                 Text("已完成".uppercased())
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.caption2.weight(.semibold))
                     .foregroundStyle(.tertiary)
                     .tracking(0.5)
 
                 Spacer()
 
                 Text("\(count)")
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.caption2.weight(.medium))
                     .foregroundStyle(.quaternary)
 
-                Image(systemName: isDoneExpanded ? "chevron.up" : "chevron.down")
-                    .font(.system(size: 8, weight: .medium))
+                Image(systemName: "chevron.down")
+                    .font(.caption2.weight(.medium))
                     .foregroundStyle(.quaternary)
+                    .rotationEffect(isDoneExpanded ? .degrees(-180) : .zero)
+                    .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
             }
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 18)
+        .padding(.horizontal, 16)
         .padding(.top, 10)
         .padding(.bottom, 4)
     }
@@ -209,17 +213,17 @@ struct TaskPopoverView: View {
     private func sectionHeader(title: String, count: Int) -> some View {
         HStack {
             Text(title.uppercased())
-                .font(.system(size: 10, weight: .semibold))
+                .font(.caption2.weight(.semibold))
                 .foregroundStyle(.tertiary)
                 .tracking(0.5)
 
             Spacer()
 
             Text("\(count)")
-                .font(.system(size: 10, weight: .medium))
+                .font(.caption2.weight(.medium))
                 .foregroundStyle(.quaternary)
         }
-        .padding(.horizontal, 18)
+        .padding(.horizontal, 16)
         .padding(.top, 10)
         .padding(.bottom, 4)
     }
