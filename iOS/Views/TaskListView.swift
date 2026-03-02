@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TaskListView: View {
-    @State var store: TaskStore
+    var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
     @State private var isDoneExpanded = false
@@ -14,7 +14,7 @@ struct TaskListView: View {
                 inputBar
             }
             .navigationTitle("GroTask")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -22,6 +22,7 @@ struct TaskListView: View {
                     } label: {
                         Image(systemName: "plus.circle")
                     }
+                    .accessibilityLabel("添加新任务")
                 }
             }
         }
@@ -29,7 +30,11 @@ struct TaskListView: View {
 
     // MARK: - Task List
 
+    @ViewBuilder
     private var taskList: some View {
+        if store.tasks.isEmpty {
+            ContentUnavailableView("暂无任务", systemImage: "checkmark.circle", description: Text("点击右上角 + 添加新任务"))
+        } else {
         List {
             let pinned = store.pinnedTasks
             if !pinned.isEmpty {
@@ -61,10 +66,12 @@ struct TaskListView: View {
                             Text("已完成")
                             Spacer()
                             Text("\(done.count)")
-                                .foregroundStyle(.secondary)
-                            Image(systemName: isDoneExpanded ? "chevron.up" : "chevron.down")
+                                .foregroundStyle(.tertiary)
+                            Image(systemName: "chevron.down")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.tertiary)
+                                .rotationEffect(isDoneExpanded ? .degrees(-180) : .zero)
+                                .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
                         }
                     }
                     .foregroundStyle(.primary)
@@ -72,7 +79,9 @@ struct TaskListView: View {
             }
         }
         .listStyle(.insetGrouped)
-        .contentMargins(.bottom, 60) // 为底部输入栏留空间
+        .contentMargins(.bottom, 70)
+        .scrollDismissesKeyboard(.interactively)
+        }
     }
 
     @ViewBuilder
@@ -102,31 +111,42 @@ struct TaskListView: View {
     // MARK: - Input Bar
 
     private var inputBar: some View {
-        HStack(spacing: 10) {
-            Button {
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    newTaskCategory = newTaskCategory.next
+        VStack(spacing: 0) {
+            Divider()
+            HStack(spacing: 10) {
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        newTaskCategory = newTaskCategory.next
+                    }
+                } label: {
+                    Circle()
+                        .fill(newTaskCategory.color)
+                        .frame(width: 12, height: 12)
                 }
-            } label: {
-                Circle()
-                    .fill(newTaskCategory.color)
-                    .frame(width: 10, height: 10)
-            }
+                .buttonStyle(.plain)
+                .frame(width: 44, height: 44)
+                .accessibilityLabel("类别：\(newTaskCategory.label)")
+                .accessibilityHint("双击切换为\(newTaskCategory.next.label)")
 
-            TextField("新任务...", text: $newTaskTitle)
-                .focused($isInputFocused)
-                .onSubmit { addTask() }
+                TextField("新任务...", text: $newTaskTitle)
+                    .font(.body)
+                    .focused($isInputFocused)
+                    .onSubmit { addTask() }
 
-            if !newTaskTitle.isEmpty {
-                Button(action: addTask) {
-                    Image(systemName: "arrow.up.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.blue)
+                if !newTaskTitle.isEmpty {
+                    Button(action: addTask) {
+                        Image(systemName: "arrow.up.circle.fill")
+                            .font(.title2)
+                            .foregroundStyle(.tint)
+                    }
+                    .accessibilityLabel("添加任务")
+                    .frame(minWidth: 44, minHeight: 44)
+                    .transition(.scale.combined(with: .opacity))
                 }
             }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
         .background(.regularMaterial)
     }
 
@@ -140,4 +160,5 @@ struct TaskListView: View {
         }
         newTaskTitle = ""
     }
+
 }
