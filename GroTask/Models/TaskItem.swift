@@ -1,39 +1,48 @@
 import SwiftUI
 
-// MARK: - TaskStatus
+// MARK: - TaskCategory
 
-enum TaskStatus: Int, CaseIterable, Identifiable, Codable {
-    case todo = 0
-    case inProgress = 1
-    case done = 2
+enum TaskCategory: String, CaseIterable, Identifiable, Codable {
+    case work
+    case life
 
-    var id: Int { rawValue }
+    var id: String { rawValue }
 
-    var next: TaskStatus {
-        TaskStatus(rawValue: (rawValue + 1) % 3) ?? .todo
+    var next: TaskCategory {
+        self == .work ? .life : .work
     }
 
-    var symbolName: String {
+    var color: Color {
         switch self {
-        case .todo:       return "circle"
-        case .inProgress: return "circle.dotted.and.circle"
-        case .done:       return "checkmark.circle.fill"
-        }
-    }
-
-    var accentColor: Color {
-        switch self {
-        case .todo:       return Color(.systemGray)
-        case .inProgress: return Color(.controlAccentColor)
-        case .done:       return Color(.systemGreen)
+        case .work: return Color(.systemBlue)
+        case .life: return Color(.systemOrange)
         }
     }
 
     var label: String {
         switch self {
-        case .todo:       return "未开始"
-        case .inProgress: return "进行中"
-        case .done:       return "已完成"
+        case .work: return "工作"
+        case .life: return "生活"
+        }
+    }
+}
+
+// MARK: - TaskStatus
+
+enum TaskStatus: Int, CaseIterable, Identifiable, Codable {
+    case todo = 0
+    case done = 2
+
+    var id: Int { rawValue }
+
+    var next: TaskStatus {
+        self == .todo ? .done : .todo
+    }
+
+    var label: String {
+        switch self {
+        case .todo: return "未开始"
+        case .done: return "已完成"
         }
     }
 }
@@ -44,13 +53,17 @@ struct TaskItem: Identifiable, Codable, Equatable {
     let id: UUID
     var title: String
     var status: TaskStatus
+    var category: TaskCategory
+    var isPinned: Bool
     let createdAt: Date
     var completedAt: Date?
 
-    init(title: String, status: TaskStatus = .todo) {
+    init(title: String, category: TaskCategory = .work, status: TaskStatus = .todo) {
         self.id = UUID()
         self.title = title
         self.status = status
+        self.category = category
+        self.isPinned = false
         self.createdAt = Date()
         self.completedAt = nil
     }

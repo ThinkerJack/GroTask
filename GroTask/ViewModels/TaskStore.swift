@@ -27,8 +27,8 @@ final class TaskStore {
 
     // MARK: - CRUD
 
-    func addTask(title: String) {
-        let task = TaskItem(title: title)
+    func addTask(title: String, category: TaskCategory = .work) {
+        let task = TaskItem(title: title, category: category)
         tasks.insert(task, at: 0)
         save()
     }
@@ -44,8 +44,42 @@ final class TaskStore {
         save()
     }
 
-    // MARK: - Filtered / Grouped
+    func togglePin(id: UUID) {
+        guard let index = tasks.firstIndex(where: { $0.id == id }) else { return }
+        tasks[index].isPinned.toggle()
+        save()
+    }
 
+    func toggleCategory(id: UUID) {
+        guard let index = tasks.firstIndex(where: { $0.id == id }) else { return }
+        tasks[index].category = tasks[index].category.next
+        save()
+    }
+
+    // MARK: - Grouped Queries
+
+    /// Pinned todo tasks (今天)
+    var pinnedTasks: [TaskItem] {
+        tasks
+            .filter { $0.isPinned && $0.status == .todo }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
+
+    /// Unpinned todo tasks (待办)
+    var unpinnedTasks: [TaskItem] {
+        tasks
+            .filter { !$0.isPinned && $0.status == .todo }
+            .sorted { $0.createdAt > $1.createdAt }
+    }
+
+    /// Done tasks (已完成)
+    var doneTasks: [TaskItem] {
+        tasks
+            .filter { $0.status == .done }
+            .sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
+    }
+
+    // Keep for backward compat with tests
     func tasks(for status: TaskStatus) -> [TaskItem] {
         let filtered = tasks.filter { $0.status == status }
         if status == .done {
@@ -66,7 +100,7 @@ final class TaskStore {
         try? data.write(to: fileURL, options: .atomic)
     }
 
-    private static func load(from url: URL) -> [TaskItem] {
+    static func load(from url: URL) -> [TaskItem] {
         guard FileManager.default.fileExists(atPath: url.path) else { return [] }
         guard let data = try? Data(contentsOf: url) else { return [] }
 

@@ -1,23 +1,28 @@
 import XCTest
 @testable import GroTask
 
-final class TaskStatusTests: XCTestCase {
+final class TaskCategoryTests: XCTestCase {
 
-    func testNextCycles() {
-        XCTAssertEqual(TaskStatus.todo.next, .inProgress)
-        XCTAssertEqual(TaskStatus.inProgress.next, .done)
-        XCTAssertEqual(TaskStatus.done.next, .todo)
+    func testNextToggles() {
+        XCTAssertEqual(TaskCategory.work.next, .life)
+        XCTAssertEqual(TaskCategory.life.next, .work)
     }
 
-    func testSymbolName() {
-        XCTAssertEqual(TaskStatus.todo.symbolName, "circle")
-        XCTAssertEqual(TaskStatus.inProgress.symbolName, "circle.dotted.and.circle")
-        XCTAssertEqual(TaskStatus.done.symbolName, "checkmark.circle.fill")
+    func testLabel() {
+        XCTAssertEqual(TaskCategory.work.label, "工作")
+        XCTAssertEqual(TaskCategory.life.label, "生活")
+    }
+}
+
+final class TaskStatusTests: XCTestCase {
+
+    func testNextToggles() {
+        XCTAssertEqual(TaskStatus.todo.next, .done)
+        XCTAssertEqual(TaskStatus.done.next, .todo)
     }
 
     func testLabel() {
         XCTAssertEqual(TaskStatus.todo.label, "未开始")
-        XCTAssertEqual(TaskStatus.inProgress.label, "进行中")
         XCTAssertEqual(TaskStatus.done.label, "已完成")
     }
 
@@ -39,9 +44,16 @@ final class TaskItemTests: XCTestCase {
         let task = TaskItem(title: "Test task")
         XCTAssertEqual(task.title, "Test task")
         XCTAssertEqual(task.status, .todo)
+        XCTAssertEqual(task.category, .work)
+        XCTAssertFalse(task.isPinned)
         XCTAssertNotNil(task.id)
         XCTAssertNotNil(task.createdAt)
         XCTAssertNil(task.completedAt)
+    }
+
+    func testInitWithCategory() {
+        let task = TaskItem(title: "Groceries", category: .life)
+        XCTAssertEqual(task.category, .life)
     }
 
     func testCodableRoundTrip() throws {
@@ -57,6 +69,8 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(decoded.id, task.id)
         XCTAssertEqual(decoded.title, task.title)
         XCTAssertEqual(decoded.status, task.status)
+        XCTAssertEqual(decoded.category, task.category)
+        XCTAssertEqual(decoded.isPinned, task.isPinned)
     }
 
     func testCycleStatusSetsCompletedAt() {
@@ -64,11 +78,7 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(task.status, .todo)
         XCTAssertNil(task.completedAt)
 
-        task.cycleStatus() // todo -> inProgress
-        XCTAssertEqual(task.status, .inProgress)
-        XCTAssertNil(task.completedAt)
-
-        task.cycleStatus() // inProgress -> done
+        task.cycleStatus() // todo -> done
         XCTAssertEqual(task.status, .done)
         XCTAssertNotNil(task.completedAt)
 
