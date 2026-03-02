@@ -53,16 +53,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func positionNearStatusItem() {
-        guard let button = statusItem.button,
-              let buttonWindow = button.window else { return }
+        guard let screen = NSScreen.main else { return }
 
-        let buttonRect = buttonWindow.convertToScreen(
-            button.convert(button.bounds, to: nil)
-        )
         let panelWidth = panel.frame.width
         let panelHeight = panel.frame.height
-        let x = buttonRect.midX - panelWidth / 2
-        let y = buttonRect.minY - panelHeight - 4
+        let visibleFrame = screen.visibleFrame
+
+        // 屏幕右上角，留 8pt 边距
+        let x = visibleFrame.maxX - panelWidth - 8
+        let y = visibleFrame.maxY - panelHeight - 8
 
         panel.setFrameOrigin(NSPoint(x: x, y: y))
     }

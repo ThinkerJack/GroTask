@@ -85,6 +85,14 @@ final class TaskStore {
         save()
     }
 
+    func updateTitle(id: UUID, newTitle: String) {
+        let trimmed = newTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        guard let entity = findEntity(id: id) else { return }
+        entity.title = trimmed
+        save()
+    }
+
     // MARK: - Grouped Queries
 
     var pinnedTasks: [TaskItem] {

@@ -4,6 +4,7 @@ struct TaskPopoverView: View {
     @State var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
+    @State private var isDoneExpanded = false
     @FocusState private var isInputFocused: Bool
 
     var body: some View {
@@ -61,8 +62,10 @@ struct TaskPopoverView: View {
 
                         let done = store.doneTasks
                         if !done.isEmpty {
-                            sectionHeader(title: "已完成", count: done.count)
-                            taskRows(done)
+                            doneSectionHeader(count: done.count)
+                            if isDoneExpanded {
+                                taskRows(done)
+                            }
                         }
                     }
                     .padding(.vertical, 4)
@@ -139,6 +142,9 @@ struct TaskPopoverView: View {
                     withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
                         store.togglePin(id: task.id)
                     }
+                },
+                onUpdateTitle: { newTitle in
+                    store.updateTitle(id: task.id, newTitle: newTitle)
                 }
             )
             .transition(
@@ -166,6 +172,35 @@ struct TaskPopoverView: View {
                 .font(.system(size: 10, weight: .medium))
                 .foregroundStyle(.quaternary)
         }
+        .padding(.horizontal, 18)
+        .padding(.top, 10)
+        .padding(.bottom, 4)
+    }
+
+    private func doneSectionHeader(count: Int) -> some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isDoneExpanded.toggle()
+            }
+        } label: {
+            HStack {
+                Text("已完成".uppercased())
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(.tertiary)
+                    .tracking(0.5)
+
+                Spacer()
+
+                Text("\(count)")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.quaternary)
+
+                Image(systemName: isDoneExpanded ? "chevron.up" : "chevron.down")
+                    .font(.system(size: 8, weight: .medium))
+                    .foregroundStyle(.quaternary)
+            }
+        }
+        .buttonStyle(.plain)
         .padding(.horizontal, 18)
         .padding(.top, 10)
         .padding(.bottom, 4)

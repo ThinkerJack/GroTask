@@ -6,18 +6,31 @@ struct TaskRowView: View {
     let onDelete: () -> Void
     let onToggleCategory: () -> Void
     let onTogglePin: () -> Void
+    let onUpdateTitle: (String) -> Void
     @State private var isHovered = false
+    @State private var isEditing = false
+    @State private var editingTitle = ""
+    @FocusState private var isEditFocused: Bool
 
     var body: some View {
         HStack(spacing: 8) {
             leadingButton
 
             VStack(alignment: .leading, spacing: 1) {
-                Text(task.title)
-                    .font(.system(size: 13))
-                    .foregroundStyle(task.status == .done ? .tertiary : .primary)
-                    .strikethrough(task.status == .done, color: Color.secondary.opacity(0.5))
-                    .lineLimit(2)
+                if isEditing {
+                    TextField("任务标题", text: $editingTitle)
+                        .textFieldStyle(.plain)
+                        .font(.system(size: 13))
+                        .focused($isEditFocused)
+                        .onSubmit { commitEdit() }
+                        .onExitCommand { cancelEdit() }
+                } else {
+                    Text(task.title)
+                        .font(.system(size: 13))
+                        .foregroundStyle(task.status == .done ? .tertiary : .primary)
+                        .strikethrough(task.status == .done, color: Color.secondary.opacity(0.5))
+                        .lineLimit(2)
+                }
 
                 if task.status == .done, let completedAt = task.completedAt {
                     Text(completedAt, format: .dateTime.hour().minute())
@@ -27,7 +40,7 @@ struct TaskRowView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if isHovered {
+            if isHovered && !isEditing {
                 Button(action: onDelete) {
                     Image(systemName: "trash")
                         .font(.system(size: 11))
@@ -46,6 +59,7 @@ struct TaskRowView: View {
         )
         .contentShape(Rectangle())
         .onTapGesture {
+            if isEditing { return }
             if task.status == .todo {
                 withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
                     onCycleStatus()
@@ -54,6 +68,12 @@ struct TaskRowView: View {
         }
         .contextMenu {
             if task.status == .todo {
+                Button {
+                    startEditing()
+                } label: {
+                    Label("编辑任务", systemImage: "pencil")
+                }
+
                 Button {
                     withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
                         onTogglePin()
@@ -92,6 +112,26 @@ struct TaskRowView: View {
         }
         .padding(.horizontal, 6)
         .id("\(task.id)-\(task.isPinned)-\(task.category)")
+    }
+
+    // MARK: - Editing
+
+    private func startEditing() {
+        editingTitle = task.title
+        isEditing = true
+        isEditFocused = true
+    }
+
+    private func commitEdit() {
+        let trimmed = editingTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty && trimmed != task.title {
+            onUpdateTitle(trimmed)
+        }
+        isEditing = false
+    }
+
+    private func cancelEdit() {
+        isEditing = false
     }
 
     // MARK: - Leading Button

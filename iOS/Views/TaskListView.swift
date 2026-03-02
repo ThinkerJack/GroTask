@@ -91,6 +91,9 @@ struct TaskListView: View {
                 },
                 onTogglePin: {
                     withAnimation { store.togglePin(id: task.id) }
+                },
+                onUpdateTitle: { newTitle in
+                    store.updateTitle(id: task.id, newTitle: newTitle)
                 }
             )
         }
