@@ -35,7 +35,8 @@ struct TaskRowView: View {
                     } else {
                         Text(task.title)
                             .font(.body)
-                            .foregroundStyle(task.status == .done ? .tertiary : .primary)
+                            .foregroundStyle(task.status == .done ? .secondary : .primary)
+                            .opacity(task.status == .done ? 0.6 : 1)
                             .strikethrough(task.status == .done, color: Color.secondary.opacity(0.5))
                             .lineLimit(2)
                     }
@@ -43,7 +44,7 @@ struct TaskRowView: View {
                     if task.status == .done, let completedAt = task.completedAt {
                         Text(completedAt, format: .dateTime.hour().minute())
                             .font(.caption)
-                            .foregroundStyle(.quaternary)
+                            .foregroundStyle(.tertiary)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
