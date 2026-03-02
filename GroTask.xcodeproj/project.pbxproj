@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,7 +17,9 @@
 		5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CC809292CBE298873BED7 /* TaskRowView.swift */; };
 		654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF51E471AB34D7C991846503 /* TaskStoreTests.swift */; };
 		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
+		7B2F81D811A887596C731799 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38986F812FFD0CDDD8448612 /* PersistenceController.swift */; };
 		AEF04906BDC6E7B5605A3EA9 /* TaskItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14A231275670B1AA533834C /* TaskItemEntity.swift */; };
+		CE3A7FCC58984CE486357C66 /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +34,9 @@
 
 /* Begin PBXFileReference section */
 		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
+		38986F812FFD0CDDD8448612 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		3DE3F077CD6119E2333F36E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		6A8827D1C32300857B3493AE /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
@@ -71,6 +75,7 @@
 		731F0AF78A66C07B1BA259C3 /* GroTaskTests */ = {
 			isa = PBXGroup;
 			children = (
+				5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */,
 				2141248232CADE602127871F /* TaskItemTests.swift */,
 				DF51E471AB34D7C991846503 /* TaskStoreTests.swift */,
 			);
@@ -129,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */,
+				38986F812FFD0CDDD8448612 /* PersistenceController.swift */,
 				B14A231275670B1AA533834C /* TaskItemEntity.swift */,
 			);
 			path = Persistence;
@@ -192,6 +198,7 @@
 			);
 			mainGroup = C13E1011C205E188E8297A76;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -217,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE3A7FCC58984CE486357C66 /* PersistenceControllerTests.swift in Sources */,
 				6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */,
 				654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */,
 			);
@@ -229,6 +237,7 @@
 				1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */,
 				4C4DCE848364F91095F115C6 /* GroTask.xcdatamodeld in Sources */,
 				31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */,
+				7B2F81D811A887596C731799 /* PersistenceController.swift in Sources */,
 				01744395373BF734FD123285 /* TaskItem.swift in Sources */,
 				AEF04906BDC6E7B5605A3EA9 /* TaskItemEntity.swift in Sources */,
 				46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */,
@@ -270,12 +279,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -284,7 +289,6 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
 				PRODUCT_NAME = GroTask;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -294,12 +298,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -308,7 +308,6 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.app;
 				PRODUCT_NAME = GroTask;
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
