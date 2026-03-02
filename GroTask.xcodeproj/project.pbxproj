@@ -3,25 +3,34 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		01744395373BF734FD123285 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84904FC4FD60834E858CFE2 /* TaskItem.swift */; };
+		0E98BBFE3EA33D2E8AFE29EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E393D8D9937DA1CFFF018112 /* Assets.xcassets */; };
 		183B0DD11F8D7C2BC2271470 /* MigrationHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8650C24E0984BB5DD274CE5 /* MigrationHelperTests.swift */; };
 		1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */; };
 		31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */; };
+		3C1BEDF1F75AD6B6F6C1CBEF /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB051CD07897FD290DE250 /* MigrationHelper.swift */; };
 		3C28BE3C5973837A19537538 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E393D8D9937DA1CFFF018112 /* Assets.xcassets */; };
 		46AFEBAAD5EB9C3616DFF268 /* TaskPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */; };
 		4C4DCE848364F91095F115C6 /* GroTask.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */; };
 		4D323EA46F760123F4A1309A /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8827D1C32300857B3493AE /* TaskStore.swift */; };
+		57393829F0489C39A3F96E50 /* TaskItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14A231275670B1AA533834C /* TaskItemEntity.swift */; };
 		5BFEEF475586ADACFF12E364 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997CC809292CBE298873BED7 /* TaskRowView.swift */; };
 		654D47EFFBDED3E0B41FB273 /* TaskStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF51E471AB34D7C991846503 /* TaskStoreTests.swift */; };
 		6A6655A85E514F694CDC6BDF /* TaskItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2141248232CADE602127871F /* TaskItemTests.swift */; };
+		75D53573B00DA55F5DF4E8EC /* GroTaskiOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C175CE3575785FBC3F639077 /* GroTaskiOSApp.swift */; };
 		7B2F81D811A887596C731799 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38986F812FFD0CDDD8448612 /* PersistenceController.swift */; };
 		AEF04906BDC6E7B5605A3EA9 /* TaskItemEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B14A231275670B1AA533834C /* TaskItemEntity.swift */; };
+		AFBC340FEBF33A6EDFF19DB6 /* GroTask.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */; };
+		B6EFC5E6A16329704A859EE1 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38986F812FFD0CDDD8448612 /* PersistenceController.swift */; };
+		BF9379F6DE06BD3E7B2D9DE3 /* TaskListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECA118BA8D90E0B68F5FA63 /* TaskListView.swift */; };
 		C87643C83976FAB310F1B013 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB051CD07897FD290DE250 /* MigrationHelper.swift */; };
 		CE3A7FCC58984CE486357C66 /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */; };
+		E1C09DD665D2E3E0036171BB /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84904FC4FD60834E858CFE2 /* TaskItem.swift */; };
+		F8B1EA707A4D4E7E12F12186 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8827D1C32300857B3493AE /* TaskStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,9 +45,11 @@
 
 /* Begin PBXFileReference section */
 		2141248232CADE602127871F /* TaskItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemTests.swift; sourceTree = "<group>"; };
+		267C00A14A49DF32FFB5E4BF /* GroTaskiOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = GroTaskiOS.app; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38986F812FFD0CDDD8448612 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		3DE3F077CD6119E2333F36E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceControllerTests.swift; sourceTree = "<group>"; };
+		53411B6665FB4E3313E1F0EF /* GroTaskiOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTaskiOS.entitlements; sourceTree = "<group>"; };
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		6A8827D1C32300857B3493AE /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
@@ -48,8 +59,10 @@
 		997CC809292CBE298873BED7 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
 		B14A231275670B1AA533834C /* TaskItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemEntity.swift; sourceTree = "<group>"; };
 		B8650C24E0984BB5DD274CE5 /* MigrationHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHelperTests.swift; sourceTree = "<group>"; };
+		C175CE3575785FBC3F639077 /* GroTaskiOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskiOSApp.swift; sourceTree = "<group>"; };
 		C81785A94AA146C40B74A443 /* GroTask.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GroTask.entitlements; sourceTree = "<group>"; };
 		C84904FC4FD60834E858CFE2 /* TaskItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItem.swift; sourceTree = "<group>"; };
+		CECA118BA8D90E0B68F5FA63 /* TaskListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListView.swift; sourceTree = "<group>"; };
 		DF51E471AB34D7C991846503 /* TaskStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStoreTests.swift; sourceTree = "<group>"; };
 		E393D8D9937DA1CFFF018112 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +70,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		0891FB10760865AFB637220E /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				53411B6665FB4E3313E1F0EF /* GroTaskiOS.entitlements */,
+				C175CE3575785FBC3F639077 /* GroTaskiOSApp.swift */,
+				963CDF609E4862F8A20B3DB9 /* Views */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		2AB182F80E49216A07D227C7 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -87,10 +110,19 @@
 			path = GroTaskTests;
 			sourceTree = "<group>";
 		};
+		963CDF609E4862F8A20B3DB9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CECA118BA8D90E0B68F5FA63 /* TaskListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		C13E1011C205E188E8297A76 = {
 			isa = PBXGroup;
 			children = (
 				731F0AF78A66C07B1BA259C3 /* GroTaskTests */,
+				0891FB10760865AFB637220E /* iOS */,
 				2AB182F80E49216A07D227C7 /* macOS */,
 				DC0008958E55FDF92B95E703 /* Shared */,
 				E264CDDC6D94411158504DC7 /* Products */,
@@ -120,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */,
+				267C00A14A49DF32FFB5E4BF /* GroTaskiOS.app */,
 				5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */,
 			);
 			name = Products;
@@ -185,6 +218,24 @@
 			productReference = 5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		B341E944338FF6D6750EEFCF /* GroTaskiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DF5EE74720D72D769F532AE7 /* Build configuration list for PBXNativeTarget "GroTaskiOS" */;
+			buildPhases = (
+				1FD7304CE38C17E5B2CFAD8C /* Sources */,
+				153A434D9FA431D8DEC96F0F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GroTaskiOS;
+			packageProductDependencies = (
+			);
+			productName = GroTaskiOS;
+			productReference = 267C00A14A49DF32FFB5E4BF /* GroTaskiOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -193,6 +244,19 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					2A66F0F0530D2B2414E8CF94 = {
+						ProvisioningStyle = Automatic;
+					};
+					61D24765E1E3FD83C2656C84 = {
+						DevelopmentTeam = 6JX28238AJ;
+						ProvisioningStyle = Automatic;
+					};
+					B341E944338FF6D6750EEFCF = {
+						DevelopmentTeam = 6JX28238AJ;
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = EB1367A8AEDBD3E5D70F2132 /* Build configuration list for PBXProject "GroTask" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -204,17 +268,25 @@
 			);
 			mainGroup = C13E1011C205E188E8297A76;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				2A66F0F0530D2B2414E8CF94 /* GroTask */,
 				61D24765E1E3FD83C2656C84 /* GroTaskTests */,
+				B341E944338FF6D6750EEFCF /* GroTaskiOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		153A434D9FA431D8DEC96F0F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0E98BBFE3EA33D2E8AFE29EF /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F289D85551FD4F866A7A5156 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -226,6 +298,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1FD7304CE38C17E5B2CFAD8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFBC340FEBF33A6EDFF19DB6 /* GroTask.xcdatamodeld in Sources */,
+				75D53573B00DA55F5DF4E8EC /* GroTaskiOSApp.swift in Sources */,
+				3C1BEDF1F75AD6B6F6C1CBEF /* MigrationHelper.swift in Sources */,
+				B6EFC5E6A16329704A859EE1 /* PersistenceController.swift in Sources */,
+				E1C09DD665D2E3E0036171BB /* TaskItem.swift in Sources */,
+				57393829F0489C39A3F96E50 /* TaskItemEntity.swift in Sources */,
+				BF9379F6DE06BD3E7B2D9DE3 /* TaskListView.swift in Sources */,
+				F8B1EA707A4D4E7E12F12186 /* TaskStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3F2EA42E027F20CB69095946 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -289,6 +376,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -308,6 +396,7 @@
 				CODE_SIGN_ENTITLEMENTS = macOS/GroTask.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4KT56S2BX6;
 				INFOPLIST_FILE = macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -353,8 +442,10 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 6JX28238AJ;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -369,7 +460,6 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
@@ -390,6 +480,56 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.tests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GroTask.app/Contents/MacOS/GroTask";
+			};
+			name = Debug;
+		};
+		91D5EE53E0E7F9C8F64D5285 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iOS/GroTaskiOS.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.ios;
+				PRODUCT_NAME = GroTask;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A06EB323EDBE3DFCDDAA9D8B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = iOS/GroTaskiOS.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.grotask.ios;
+				PRODUCT_NAME = GroTask;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -426,8 +566,10 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 6JX28238AJ;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -449,7 +591,6 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
@@ -473,6 +614,15 @@
 			buildConfigurations = (
 				4DEA985456EA7FC138F139BA /* Debug */,
 				1F9C1EE1101505471530155C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DF5EE74720D72D769F532AE7 /* Build configuration list for PBXNativeTarget "GroTaskiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A06EB323EDBE3DFCDDAA9D8B /* Debug */,
+				91D5EE53E0E7F9C8F64D5285 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
