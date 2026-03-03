@@ -42,7 +42,7 @@ struct TaskRowView: View {
                     }
 
                     if task.status == .done, let completedAt = task.completedAt {
-                        Text(completedAt, format: .dateTime.hour().minute())
+                        Text(completedTimeText(completedAt))
                             .font(.caption)
                             .foregroundStyle(.tertiary)
                     }
@@ -116,7 +116,7 @@ struct TaskRowView: View {
             }
         }
         .padding(.horizontal, 6)
-        .id("\(task.id)-\(task.isPinned)-\(task.category)")
+        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)")
     }
 
     // MARK: - Editing
@@ -177,6 +177,19 @@ struct TaskRowView: View {
             .buttonStyle(.plain)
             .frame(width: 24, height: 24)
             .help("标记为未完成")
+        }
+    }
+
+    private func completedTimeText(_ date: Date) -> String {
+        let calendar = Calendar.current
+        if calendar.isDateInToday(date) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            return formatter.string(from: date)
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy/MM/dd HH:mm"
+            return formatter.string(from: date)
         }
     }
 

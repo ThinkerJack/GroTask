@@ -50,7 +50,7 @@ struct iOSTaskRowView: View {
                     }
 
                     if task.status == .done, let completedAt = task.completedAt {
-                        Text(completedAt, format: .dateTime.hour().minute())
+                        Text(completedTimeText(completedAt))
                             .font(.caption2)
                             .foregroundStyle(.tertiary)
                     }
@@ -100,6 +100,21 @@ struct iOSTaskRowView: View {
             Button(role: .destructive, action: onDelete) {
                 Label("删除任务", systemImage: "trash")
             }
+        }
+    }
+
+    // MARK: - Helpers
+
+    private func completedTimeText(_ date: Date) -> String {
+        let calendar = Calendar.current
+        if calendar.isDateInToday(date) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            return formatter.string(from: date)
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy/MM/dd HH:mm"
+            return formatter.string(from: date)
         }
     }
 
