@@ -6,6 +6,7 @@ struct TaskListView: View {
     @State private var newTaskCategory: TaskCategory = .work
     @State private var newTaskTimeScope: TaskTimeScope = .anytime
     @State private var isDoneExpanded = false
+    @State private var collapsedScopes: Set<TaskTimeScope> = [.someday]
     @FocusState private var isInputFocused: Bool
 
     var body: some View {
@@ -37,22 +38,53 @@ struct TaskListView: View {
             ContentUnavailableView("暂无任务", systemImage: "checkmark.circle", description: Text("点击右上角 + 添加新任务"))
         } else {
         List {
+            // 置顶区
             let pinned = store.pinnedTasks
             if !pinned.isEmpty {
                 Section {
                     taskRows(pinned)
                 } header: {
-                    Label("今天", systemImage: "pin.fill")
+                    Label("置顶", systemImage: "pin.fill")
                 }
             }
 
-            let unpinned = store.unpinnedTasks
-            if !unpinned.isEmpty {
-                Section("待办") {
-                    taskRows(unpinned)
+            // 按时间视角分组
+            ForEach(TaskTimeScope.allCases) { scope in
+                let scopeTasks = store.tasks(for: scope)
+                if !scopeTasks.isEmpty {
+                    Section {
+                        if !collapsedScopes.contains(scope) {
+                            taskRows(scopeTasks)
+                        }
+                    } header: {
+                        Button {
+                            withAnimation {
+                                if collapsedScopes.contains(scope) {
+                                    collapsedScopes.remove(scope)
+                                } else {
+                                    collapsedScopes.insert(scope)
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                Label(scope.label, systemImage: scope.symbolName)
+                                    .foregroundStyle(scope.color)
+                                Spacer()
+                                Text("\(scopeTasks.count)")
+                                    .foregroundStyle(.tertiary)
+                                Image(systemName: "chevron.down")
+                                    .font(.caption)
+                                    .foregroundStyle(.tertiary)
+                                    .rotationEffect(collapsedScopes.contains(scope) ? .degrees(-90) : .zero)
+                                    .animation(.easeInOut(duration: 0.2), value: collapsedScopes.contains(scope))
+                            }
+                        }
+                        .foregroundStyle(.primary)
+                    }
                 }
             }
 
+            // 已完成区
             let done = store.doneTasks
             if !done.isEmpty {
                 Section {
