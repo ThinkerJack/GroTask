@@ -115,4 +115,49 @@ final class TaskStoreTests: XCTestCase {
         XCTAssertEqual(store.pinnedTasks.count, 0)
         XCTAssertEqual(store.doneTasks.count, 1)
     }
+
+    func testAddTaskWithTimeScope() {
+        store.addTask(title: "Quick task", category: .work, timeScope: .quick)
+        XCTAssertEqual(store.tasks[0].timeScope, .quick)
+    }
+
+    func testAddTaskDefaultTimeScope() {
+        store.addTask(title: "Default scope")
+        XCTAssertEqual(store.tasks[0].timeScope, .anytime)
+    }
+
+    func testSetTimeScope() {
+        store.addTask(title: "Change scope")
+        let id = store.tasks[0].id
+        XCTAssertEqual(store.tasks[0].timeScope, .anytime)
+
+        store.setTimeScope(id: id, scope: .today)
+        XCTAssertEqual(store.tasks[0].timeScope, .today)
+    }
+
+    func testTasksForTimeScope() {
+        store.addTask(title: "Quick one", category: .work, timeScope: .quick)
+        store.addTask(title: "Today one", category: .work, timeScope: .today)
+        store.addTask(title: "Anytime one", category: .work, timeScope: .anytime)
+        store.addTask(title: "Someday one", category: .work, timeScope: .someday)
+
+        XCTAssertEqual(store.tasks(for: .quick).count, 1)
+        XCTAssertEqual(store.tasks(for: .today).count, 1)
+        XCTAssertEqual(store.tasks(for: .anytime).count, 1)
+        XCTAssertEqual(store.tasks(for: .someday).count, 1)
+    }
+
+    func testTasksForTimeScopeExcludesDone() {
+        store.addTask(title: "Done quick", category: .work, timeScope: .quick)
+        store.cycleStatus(id: store.tasks[0].id)
+
+        XCTAssertEqual(store.tasks(for: .quick).count, 0)
+    }
+
+    func testTasksForTimeScopeExcludesPinned() {
+        store.addTask(title: "Pinned quick", category: .work, timeScope: .quick)
+        store.togglePin(id: store.tasks[0].id)
+
+        XCTAssertEqual(store.tasks(for: .quick).count, 0)
+    }
 }
