@@ -29,6 +29,7 @@ extension TaskItemEntity {
             status: status,
             category: category,
             isPinned: isPinned,
+            timeScope: .anytime,
             createdAt: createdAt ?? Date(),
             completedAt: completedAt
         )

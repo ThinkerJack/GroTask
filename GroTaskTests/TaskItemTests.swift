@@ -45,10 +45,16 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(task.title, "Test task")
         XCTAssertEqual(task.status, .todo)
         XCTAssertEqual(task.category, .work)
+        XCTAssertEqual(task.timeScope, .anytime)
         XCTAssertFalse(task.isPinned)
         XCTAssertNotNil(task.id)
         XCTAssertNotNil(task.createdAt)
         XCTAssertNil(task.completedAt)
+    }
+
+    func testInitWithTimeScope() {
+        let task = TaskItem(title: "Quick task", timeScope: .quick)
+        XCTAssertEqual(task.timeScope, .quick)
     }
 
     func testInitWithCategory() {
@@ -71,6 +77,7 @@ final class TaskItemTests: XCTestCase {
         XCTAssertEqual(decoded.status, task.status)
         XCTAssertEqual(decoded.category, task.category)
         XCTAssertEqual(decoded.isPinned, task.isPinned)
+        XCTAssertEqual(decoded.timeScope, task.timeScope)
     }
 
     func testCycleStatusSetsCompletedAt() {
@@ -85,5 +92,43 @@ final class TaskItemTests: XCTestCase {
         task.cycleStatus() // done -> todo
         XCTAssertEqual(task.status, .todo)
         XCTAssertNil(task.completedAt)
+    }
+}
+
+final class TaskTimeScopeTests: XCTestCase {
+
+    func testAllCases() {
+        XCTAssertEqual(TaskTimeScope.allCases.count, 4)
+    }
+
+    func testRawValues() {
+        XCTAssertEqual(TaskTimeScope.quick.rawValue, 0)
+        XCTAssertEqual(TaskTimeScope.today.rawValue, 1)
+        XCTAssertEqual(TaskTimeScope.anytime.rawValue, 2)
+        XCTAssertEqual(TaskTimeScope.someday.rawValue, 3)
+    }
+
+    func testLabels() {
+        XCTAssertEqual(TaskTimeScope.quick.label, "快速")
+        XCTAssertEqual(TaskTimeScope.today.label, "今天")
+        XCTAssertEqual(TaskTimeScope.anytime.label, "随时")
+        XCTAssertEqual(TaskTimeScope.someday.label, "将来")
+    }
+
+    func testSymbolNames() {
+        XCTAssertFalse(TaskTimeScope.quick.symbolName.isEmpty)
+        XCTAssertFalse(TaskTimeScope.today.symbolName.isEmpty)
+        XCTAssertFalse(TaskTimeScope.anytime.symbolName.isEmpty)
+        XCTAssertFalse(TaskTimeScope.someday.symbolName.isEmpty)
+    }
+
+    func testCodable() throws {
+        let encoder = JSONEncoder()
+        let decoder = JSONDecoder()
+        for scope in TaskTimeScope.allCases {
+            let data = try encoder.encode(scope)
+            let decoded = try decoder.decode(TaskTimeScope.self, from: data)
+            XCTAssertEqual(decoded, scope)
+        }
     }
 }
