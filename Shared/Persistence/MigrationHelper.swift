@@ -33,6 +33,7 @@ enum MigrationHelper {
             entity.isPinned = task.isPinned
             entity.createdAt = task.createdAt
             entity.completedAt = task.completedAt
+            entity.timeScopeRaw = Int16(task.timeScope.rawValue)
         }
 
         do {
