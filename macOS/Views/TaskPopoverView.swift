@@ -172,6 +172,11 @@ struct TaskPopoverView: View {
                 },
                 onUpdateTitle: { newTitle in
                     store.updateTitle(id: task.id, newTitle: newTitle)
+                },
+                onSetTimeScope: { scope in
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        store.setTimeScope(id: task.id, scope: scope)
+                    }
                 }
             )
             .transition(

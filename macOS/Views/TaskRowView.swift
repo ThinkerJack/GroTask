@@ -7,6 +7,7 @@ struct TaskRowView: View {
     let onToggleCategory: () -> Void
     let onTogglePin: () -> Void
     let onUpdateTitle: (String) -> Void
+    let onSetTimeScope: (TaskTimeScope) -> Void
     @State private var isHovered = false
     @State private var isEditing = false
     @State private var editingTitle = ""
@@ -70,7 +71,7 @@ struct TaskRowView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(task.title)
-        .accessibilityValue("\(task.category.label)，\(task.status.label)")
+        .accessibilityValue("\(task.category.label)，\(task.timeScope.label)，\(task.status.label)")
         .contextMenu {
             if task.status == .todo {
                 Button {
@@ -100,6 +101,22 @@ struct TaskRowView: View {
                         systemImage: "circle.fill"
                     )
                 }
+
+                Menu {
+                    ForEach(TaskTimeScope.allCases) { scope in
+                        if scope != task.timeScope {
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.15)) {
+                                    onSetTimeScope(scope)
+                                }
+                            } label: {
+                                Label(scope.label, systemImage: scope.symbolName)
+                            }
+                        }
+                    }
+                } label: {
+                    Label("时间视角", systemImage: "clock")
+                }
             }
 
             Button(role: .destructive) {
@@ -116,7 +133,7 @@ struct TaskRowView: View {
             }
         }
         .padding(.horizontal, 6)
-        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)")
+        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)-\(task.timeScope)")
     }
 
     // MARK: - Editing
