@@ -7,6 +7,7 @@ struct iOSTaskRowView: View {
     let onToggleCategory: () -> Void
     let onTogglePin: () -> Void
     let onUpdateTitle: (String) -> Void
+    let onSetTimeScope: (TaskTimeScope) -> Void
     @State private var isEditing = false
     @State private var editingTitle = ""
     @FocusState private var isEditFocused: Bool
@@ -63,7 +64,7 @@ struct iOSTaskRowView: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(task.title)
-        .accessibilityValue("\(task.category.label)，\(task.status.label)")
+        .accessibilityValue("\(task.category.label)，\(task.timeScope.label)，\(task.status.label)")
         .accessibilityHint(task.status == .todo ? "双击标记为已完成" : "双击标记为未完成")
         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
             Button(role: .destructive, action: onDelete) {
@@ -94,6 +95,20 @@ struct iOSTaskRowView: View {
                         "切换为\(task.category.next.label)",
                         systemImage: "circle.fill"
                     )
+                }
+
+                Menu {
+                    ForEach(TaskTimeScope.allCases) { scope in
+                        if scope != task.timeScope {
+                            Button {
+                                withAnimation { onSetTimeScope(scope) }
+                            } label: {
+                                Label(scope.label, systemImage: scope.symbolName)
+                            }
+                        }
+                    }
+                } label: {
+                    Label("时间视角", systemImage: "clock")
                 }
             }
 

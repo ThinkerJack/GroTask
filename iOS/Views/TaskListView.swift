@@ -136,6 +136,9 @@ struct TaskListView: View {
                 },
                 onUpdateTitle: { newTitle in
                     store.updateTitle(id: task.id, newTitle: newTitle)
+                },
+                onSetTimeScope: { scope in
+                    withAnimation { store.setTimeScope(id: task.id, scope: scope) }
                 }
             )
             .transition(
