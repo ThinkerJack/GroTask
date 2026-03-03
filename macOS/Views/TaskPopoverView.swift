@@ -6,6 +6,7 @@ struct TaskPopoverView: View {
     @State private var newTaskCategory: TaskCategory = .work
     @State private var newTaskTimeScope: TaskTimeScope = .anytime
     @State private var isDoneExpanded = false
+    @State private var collapsedScopes: Set<TaskTimeScope> = [.someday]
     @FocusState private var isInputFocused: Bool
 
     var body: some View {
@@ -50,18 +51,25 @@ struct TaskPopoverView: View {
             } else {
                 ScrollView {
                     LazyVStack(spacing: 0) {
+                        // 置顶区
                         let pinned = store.pinnedTasks
                         if !pinned.isEmpty {
                             pinnedSectionHeader(count: pinned.count)
                             taskRows(pinned)
                         }
 
-                        let unpinned = store.unpinnedTasks
-                        if !unpinned.isEmpty {
-                            sectionHeader(title: "待办", count: unpinned.count)
-                            taskRows(unpinned)
+                        // 按时间视角分组
+                        ForEach(TaskTimeScope.allCases) { scope in
+                            let scopeTasks = store.tasks(for: scope)
+                            if !scopeTasks.isEmpty {
+                                timeScopeSectionHeader(scope: scope, count: scopeTasks.count)
+                                if !collapsedScopes.contains(scope) {
+                                    taskRows(scopeTasks)
+                                }
+                            }
                         }
 
+                        // 已完成区
                         let done = store.doneTasks
                         if !done.isEmpty {
                             doneSectionHeader(count: done.count)
@@ -196,6 +204,45 @@ struct TaskPopoverView: View {
         .padding(.bottom, 4)
     }
 
+    private func timeScopeSectionHeader(scope: TaskTimeScope, count: Int) -> some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                if collapsedScopes.contains(scope) {
+                    collapsedScopes.remove(scope)
+                } else {
+                    collapsedScopes.insert(scope)
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: scope.symbolName)
+                    .font(.caption2)
+                    .foregroundStyle(scope.color)
+
+                Text(scope.label.uppercased())
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+                    .tracking(0.5)
+
+                Spacer()
+
+                Text("\(count)")
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.quaternary)
+
+                Image(systemName: "chevron.down")
+                    .font(.caption2.weight(.medium))
+                    .foregroundStyle(.quaternary)
+                    .rotationEffect(collapsedScopes.contains(scope) ? .degrees(-90) : .zero)
+                    .animation(.easeInOut(duration: 0.2), value: collapsedScopes.contains(scope))
+            }
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 16)
+        .padding(.top, 10)
+        .padding(.bottom, 4)
+    }
+
     private func doneSectionHeader(count: Int) -> some View {
         Button {
             withAnimation(.easeInOut(duration: 0.2)) {
@@ -222,24 +269,6 @@ struct TaskPopoverView: View {
             }
         }
         .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.top, 10)
-        .padding(.bottom, 4)
-    }
-
-    private func sectionHeader(title: String, count: Int) -> some View {
-        HStack {
-            Text(title.uppercased())
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.tertiary)
-                .tracking(0.5)
-
-            Spacer()
-
-            Text("\(count)")
-                .font(.caption2.weight(.medium))
-                .foregroundStyle(.quaternary)
-        }
         .padding(.horizontal, 16)
         .padding(.top, 10)
         .padding(.bottom, 4)
