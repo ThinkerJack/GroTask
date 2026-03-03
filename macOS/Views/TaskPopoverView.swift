@@ -4,6 +4,7 @@ struct TaskPopoverView: View {
     var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
+    @State private var newTaskTimeScope: TaskTimeScope = .anytime
     @State private var isDoneExpanded = false
     @FocusState private var isInputFocused: Bool
 
@@ -90,6 +91,22 @@ struct TaskPopoverView: View {
                 .frame(width: 24, height: 24)
                 .help(newTaskCategory.label)
                 .accessibilityLabel("类别：\(newTaskCategory.label)")
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        let allCases = TaskTimeScope.allCases
+                        let currentIndex = allCases.firstIndex(of: newTaskTimeScope) ?? 0
+                        newTaskTimeScope = allCases[(currentIndex + 1) % allCases.count]
+                    }
+                } label: {
+                    Image(systemName: newTaskTimeScope.symbolName)
+                        .font(.caption)
+                        .foregroundStyle(newTaskTimeScope.color)
+                }
+                .buttonStyle(.plain)
+                .frame(width: 24, height: 24)
+                .help(newTaskTimeScope.label)
+                .accessibilityLabel("时间视角：\(newTaskTimeScope.label)")
 
                 TextField("新任务...", text: $newTaskTitle)
                     .textFieldStyle(.plain)
@@ -234,7 +251,7 @@ struct TaskPopoverView: View {
         let trimmed = newTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-            store.addTask(title: trimmed, category: newTaskCategory)
+            store.addTask(title: trimmed, category: newTaskCategory, timeScope: newTaskTimeScope)
         }
         newTaskTitle = ""
     }
