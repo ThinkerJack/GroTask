@@ -54,7 +54,7 @@ struct TaskRowView: View {
                     Button(action: onDelete) {
                         Image(systemName: "trash")
                             .font(.caption)
-                            .foregroundStyle(.tertiary)
+                            .foregroundStyle(.red.opacity(0.8))
                     }
                     .buttonStyle(.plain)
                     .transition(.opacity)
@@ -62,9 +62,9 @@ struct TaskRowView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 6)
+            .padding(.vertical, 8)
             .background(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(rowBackground)
             )
             .contentShape(Rectangle())
@@ -212,10 +212,10 @@ struct TaskRowView: View {
 
     private var rowBackground: Color {
         if isHovered {
-            return Color.primary.opacity(0.06)
+            return Color.primary.opacity(0.08)
         }
         if task.status == .done {
-            return Color(.systemGreen).opacity(0.06)
+            return Color(.systemGreen).opacity(0.05)
         }
         return Color.clear
     }

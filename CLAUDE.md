@@ -60,6 +60,22 @@ GroTask is a dual-platform (macOS 15+ / iOS 17+) task management app using Swift
 
 Tests use in-memory Core Data containers (`/dev/null` store URL) for isolation. Test files cover: persistence, store CRUD/filtering, model logic, and migration.
 
+## Notarization (macOS)
+
+```bash
+# 一键公证 (需要设置环境变量 APP_PASSWORD)
+APP_PASSWORD="xxxx-xxxx-xxxx-xxxx" ./scripts/notarize.sh
+```
+
+### Key Points
+
+- **签名证书**: Developer ID Application: Chao Wu (4KT56S2BX6)
+- **Provisioning Profile**: GroTask Developer ID (Developer ID Application 类型, 在 Apple Developer 后台创建)
+- **entitlements 必须包含** `com.apple.application-identifier` 和 `com.apple.developer.team-identifier`, 否则 AMFI 无法匹配 profile, 导致 app 无法启动 (error 163)
+- **Hardened Runtime 必须启用**: archive 时设置 `ENABLE_HARDENED_RUNTIME=YES`, 否则公证会被拒
+- 导出使用 `ExportOptions.plist` (method: developer-id, signingStyle: manual)
+- 公证后的 app 位于 `build/export/GroTask.app`
+
 ## Conventions
 
 - UI text and comments are in Chinese

@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// A floating NSPanel that stays above other windows.
+/// A floating NSPanel with Liquid Glass background.
 /// Hosts SwiftUI content and supports keyboard input without activating the app.
 final class FloatingPanel: NSPanel {
 
@@ -24,7 +24,23 @@ final class FloatingPanel: NSPanel {
         animationBehavior = .utilityWindow
         hasShadow = true
 
-        contentView = NSHostingView(rootView: content())
+        let hostingView = NSHostingView(rootView: content())
+        hostingView.translatesAutoresizingMaskIntoConstraints = false
+
+        let glassView = NSGlassEffectView()
+        glassView.translatesAutoresizingMaskIntoConstraints = false
+        glassView.cornerRadius = 12
+
+        glassView.addSubview(hostingView)
+        NSLayoutConstraint.activate([
+            hostingView.topAnchor.constraint(equalTo: glassView.topAnchor),
+            hostingView.bottomAnchor.constraint(equalTo: glassView.bottomAnchor),
+            hostingView.leadingAnchor.constraint(equalTo: glassView.leadingAnchor),
+            hostingView.trailingAnchor.constraint(equalTo: glassView.trailingAnchor),
+        ])
+
+        contentView = glassView
+        contentView?.wantsLayer = true
     }
 
     override var canBecomeKey: Bool { true }
