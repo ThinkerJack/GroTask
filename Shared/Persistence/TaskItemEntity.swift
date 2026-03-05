@@ -9,12 +9,18 @@ public class TaskItemEntity: NSManagedObject {
     @NSManaged public var isPinned: Bool
     @NSManaged public var createdAt: Date?
     @NSManaged public var completedAt: Date?
+    @NSManaged public var timeScopeRaw: Int16
 }
 
 extension TaskItemEntity {
     var status: TaskStatus {
         get { TaskStatus(rawValue: Int(statusRaw)) ?? .todo }
         set { statusRaw = Int16(newValue.rawValue) }
+    }
+
+    var timeScope: TaskTimeScope {
+        get { TaskTimeScope(rawValue: Int(timeScopeRaw)) ?? .anytime }
+        set { timeScopeRaw = Int16(newValue.rawValue) }
     }
 
     var category: TaskCategory {
@@ -29,6 +35,7 @@ extension TaskItemEntity {
             status: status,
             category: category,
             isPinned: isPinned,
+            timeScope: timeScope,
             createdAt: createdAt ?? Date(),
             completedAt: completedAt
         )

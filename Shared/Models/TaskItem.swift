@@ -34,6 +34,44 @@ enum TaskCategory: String, CaseIterable, Identifiable, Codable {
     }
 }
 
+// MARK: - TaskTimeScope
+
+enum TaskTimeScope: Int, CaseIterable, Identifiable, Codable {
+    case quick   = 0
+    case today   = 1
+    case anytime = 2
+    case someday = 3
+
+    var id: Int { rawValue }
+
+    var label: String {
+        switch self {
+        case .quick:   return "快速"
+        case .today:   return "今天"
+        case .anytime: return "随时"
+        case .someday: return "将来"
+        }
+    }
+
+    var symbolName: String {
+        switch self {
+        case .quick:   return "bolt.fill"
+        case .today:   return "sun.max.fill"
+        case .anytime: return "hand.thumbsup.fill"
+        case .someday: return "cloud.fill"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .quick:   return Color(.systemYellow)
+        case .today:   return Color(.systemRed)
+        case .anytime: return Color(.systemGreen)
+        case .someday: return Color(.systemGray)
+        }
+    }
+}
+
 // MARK: - TaskStatus
 
 enum TaskStatus: Int, CaseIterable, Identifiable, Codable {
@@ -62,26 +100,29 @@ struct TaskItem: Identifiable, Codable, Equatable {
     var status: TaskStatus
     var category: TaskCategory
     var isPinned: Bool
+    var timeScope: TaskTimeScope
     let createdAt: Date
     var completedAt: Date?
 
-    init(title: String, category: TaskCategory = .work, status: TaskStatus = .todo) {
+    init(title: String, category: TaskCategory = .work, timeScope: TaskTimeScope = .anytime, status: TaskStatus = .todo) {
         self.id = UUID()
         self.title = title
         self.status = status
         self.category = category
         self.isPinned = false
+        self.timeScope = timeScope
         self.createdAt = Date()
         self.completedAt = nil
     }
 
     init(id: UUID, title: String, status: TaskStatus, category: TaskCategory,
-         isPinned: Bool, createdAt: Date, completedAt: Date?) {
+         isPinned: Bool, timeScope: TaskTimeScope, createdAt: Date, completedAt: Date?) {
         self.id = id
         self.title = title
         self.status = status
         self.category = category
         self.isPinned = isPinned
+        self.timeScope = timeScope
         self.createdAt = createdAt
         self.completedAt = completedAt
     }

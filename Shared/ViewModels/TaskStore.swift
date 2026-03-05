@@ -43,7 +43,7 @@ final class TaskStore {
 
     // MARK: - CRUD
 
-    func addTask(title: String, category: TaskCategory = .work) {
+    func addTask(title: String, category: TaskCategory = .work, timeScope: TaskTimeScope = .anytime) {
         let entity = TaskItemEntity(context: context)
         entity.id = UUID()
         entity.title = title
@@ -52,6 +52,7 @@ final class TaskStore {
         entity.isPinned = false
         entity.createdAt = Date()
         entity.completedAt = nil
+        entity.timeScopeRaw = Int16(timeScope.rawValue)
         save()
     }
 
@@ -85,6 +86,12 @@ final class TaskStore {
         save()
     }
 
+    func setTimeScope(id: UUID, scope: TaskTimeScope) {
+        guard let entity = findEntity(id: id) else { return }
+        entity.timeScope = scope
+        save()
+    }
+
     func updateTitle(id: UUID, newTitle: String) {
         let trimmed = newTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
@@ -111,6 +118,12 @@ final class TaskStore {
         tasks
             .filter { $0.status == .done }
             .sorted { ($0.completedAt ?? .distantPast) > ($1.completedAt ?? .distantPast) }
+    }
+
+    func tasks(for scope: TaskTimeScope) -> [TaskItem] {
+        tasks
+            .filter { $0.timeScope == scope && $0.status == .todo && !$0.isPinned }
+            .sorted { $0.createdAt > $1.createdAt }
     }
 
     func tasks(for status: TaskStatus) -> [TaskItem] {

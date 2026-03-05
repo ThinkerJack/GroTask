@@ -7,6 +7,7 @@ struct TaskRowView: View {
     let onToggleCategory: () -> Void
     let onTogglePin: () -> Void
     let onUpdateTitle: (String) -> Void
+    let onSetTimeScope: (TaskTimeScope) -> Void
     @State private var isHovered = false
     @State private var isEditing = false
     @State private var editingTitle = ""
@@ -53,7 +54,7 @@ struct TaskRowView: View {
                     Button(action: onDelete) {
                         Image(systemName: "trash")
                             .font(.caption)
-                            .foregroundStyle(.tertiary)
+                            .foregroundStyle(.red.opacity(0.8))
                     }
                     .buttonStyle(.plain)
                     .transition(.opacity)
@@ -61,16 +62,16 @@ struct TaskRowView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 6)
+            .padding(.vertical, 8)
             .background(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(rowBackground)
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityLabel(task.title)
-        .accessibilityValue("\(task.category.label)，\(task.status.label)")
+        .accessibilityValue("\(task.category.label)，\(task.timeScope.label)，\(task.status.label)")
         .contextMenu {
             if task.status == .todo {
                 Button {
@@ -100,6 +101,22 @@ struct TaskRowView: View {
                         systemImage: "circle.fill"
                     )
                 }
+
+                Menu {
+                    ForEach(TaskTimeScope.allCases) { scope in
+                        if scope != task.timeScope {
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.15)) {
+                                    onSetTimeScope(scope)
+                                }
+                            } label: {
+                                Label(scope.label, systemImage: scope.symbolName)
+                            }
+                        }
+                    }
+                } label: {
+                    Label("时间视角", systemImage: "clock")
+                }
             }
 
             Button(role: .destructive) {
@@ -116,7 +133,7 @@ struct TaskRowView: View {
             }
         }
         .padding(.horizontal, 6)
-        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)")
+        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)-\(task.timeScope)")
     }
 
     // MARK: - Editing
@@ -195,10 +212,10 @@ struct TaskRowView: View {
 
     private var rowBackground: Color {
         if isHovered {
-            return Color.primary.opacity(0.06)
+            return Color.primary.opacity(0.08)
         }
         if task.status == .done {
-            return Color(.systemGreen).opacity(0.06)
+            return Color(.systemGreen).opacity(0.05)
         }
         return Color.clear
     }

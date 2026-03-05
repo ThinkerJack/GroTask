@@ -4,7 +4,10 @@ struct TaskPopoverView: View {
     var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
+    @State private var newTaskTimeScope: TaskTimeScope = .anytime
+    @State private var selectedScope: TaskTimeScope? = .today
     @State private var isDoneExpanded = false
+    @State private var collapsedScopes: Set<TaskTimeScope> = [.someday]
     @FocusState private var isInputFocused: Bool
 
     var body: some View {
@@ -13,6 +16,7 @@ struct TaskPopoverView: View {
             HStack {
                 Text("GroTask")
                     .font(.headline)
+                    .fontWeight(.semibold)
                     .foregroundStyle(.primary)
 
                 Spacer()
@@ -21,7 +25,7 @@ struct TaskPopoverView: View {
                     isInputFocused = true
                 } label: {
                     Image(systemName: "plus.circle")
-                        .font(.body)
+                        .font(.title3)
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
@@ -29,24 +33,48 @@ struct TaskPopoverView: View {
                 .accessibilityLabel("添加新任务")
             }
             .padding(.horizontal, 16)
-            .padding(.top, 4)
+            .padding(.top, 12)
             .padding(.bottom, 8)
 
-            Divider().opacity(0.5)
+            // Scope tab bar
+            scopeTabBar
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+
+            Divider().opacity(0.3)
 
             // Task list
             if store.tasks.isEmpty {
                 VStack(spacing: 8) {
                     Image(systemName: "checkmark.circle")
-                        .font(.title)
+                        .font(.largeTitle)
                         .foregroundStyle(.quaternary)
                     Text("暂无任务")
-                        .font(.caption)
+                        .font(.callout)
                         .foregroundStyle(.tertiary)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.vertical, 40)
+            } else if let scope = selectedScope {
+                // 筛选视图：只显示选中视角
+                let pinned = store.pinnedTasks
+                let scopeTasks = store.tasks(for: scope)
+                if pinned.isEmpty && scopeTasks.isEmpty {
+                    scopeEmptyView(scope)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 0) {
+                            if !pinned.isEmpty {
+                                pinnedSectionHeader(count: pinned.count)
+                                taskRows(pinned)
+                            }
+                            taskRows(scopeTasks)
+                        }
+                        .padding(.vertical, 4)
+                    }
+                }
             } else {
+                // 全部视图：分组折叠
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         let pinned = store.pinnedTasks
@@ -55,10 +83,14 @@ struct TaskPopoverView: View {
                             taskRows(pinned)
                         }
 
-                        let unpinned = store.unpinnedTasks
-                        if !unpinned.isEmpty {
-                            sectionHeader(title: "待办", count: unpinned.count)
-                            taskRows(unpinned)
+                        ForEach(TaskTimeScope.allCases) { scope in
+                            let scopeTasks = store.tasks(for: scope)
+                            if !scopeTasks.isEmpty {
+                                timeScopeSectionHeader(scope: scope, count: scopeTasks.count)
+                                if !collapsedScopes.contains(scope) {
+                                    taskRows(scopeTasks)
+                                }
+                            }
                         }
 
                         let done = store.doneTasks
@@ -73,49 +105,119 @@ struct TaskPopoverView: View {
                 }
             }
 
-            Divider().opacity(0.5)
+            Divider().opacity(0.3)
 
-            // Quick-add input with category selector
-            HStack(spacing: 8) {
-                Button {
-                    withAnimation(.easeInOut(duration: 0.15)) {
-                        newTaskCategory = newTaskCategory.next
+            // Quick-add input with Liquid Glass effect
+            GlassEffectContainer(spacing: 8) {
+                HStack(spacing: 8) {
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            newTaskCategory = newTaskCategory.next
+                        }
+                    } label: {
+                        Circle()
+                            .fill(newTaskCategory.color)
+                            .frame(width: 10, height: 10)
                     }
-                } label: {
-                    Circle()
-                        .fill(newTaskCategory.color)
-                        .frame(width: 8, height: 8)
+                    .buttonStyle(.plain)
+                    .frame(width: 24, height: 24)
+                    .help(newTaskCategory.label)
+                    .accessibilityLabel("类别：\(newTaskCategory.label)")
+
+                    Button {
+                        withAnimation(.easeInOut(duration: 0.15)) {
+                            let allCases = TaskTimeScope.allCases
+                            let currentIndex = allCases.firstIndex(of: newTaskTimeScope) ?? 0
+                            newTaskTimeScope = allCases[(currentIndex + 1) % allCases.count]
+                        }
+                    } label: {
+                        Image(systemName: newTaskTimeScope.symbolName)
+                            .font(.callout)
+                            .foregroundStyle(newTaskTimeScope.color)
+                    }
+                    .buttonStyle(.plain)
+                    .frame(width: 24, height: 24)
+                    .help(newTaskTimeScope.label)
+                    .accessibilityLabel("时间视角：\(newTaskTimeScope.label)")
+
+                    TextField("新任务...", text: $newTaskTitle)
+                        .textFieldStyle(.plain)
+                        .font(.body)
+                        .focused($isInputFocused)
+                        .onSubmit {
+                            addTask()
+                        }
                 }
-                .buttonStyle(.plain)
-                .frame(width: 24, height: 24)
-                .help(newTaskCategory.label)
-                .accessibilityLabel("类别：\(newTaskCategory.label)")
-
-                TextField("新任务...", text: $newTaskTitle)
-                    .textFieldStyle(.plain)
-                    .font(.body)
-                    .focused($isInputFocused)
-                    .onSubmit {
-                        addTask()
-                    }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 8))
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 10)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
 
-            // Footer with quit
+            // Footer
             HStack {
                 Spacer()
                 Button("退出 GroTask") {
                     NSApplication.shared.terminate(nil)
                 }
                 .buttonStyle(.plain)
-                .font(.footnote)
+                .font(.caption2)
                 .foregroundStyle(.tertiary)
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 6)
+            .padding(.bottom, 8)
         }
         .frame(width: 320)
+    }
+
+    // MARK: - Scope Tab Bar
+
+    private var scopeTabBar: some View {
+        HStack(spacing: 4) {
+            ForEach(TaskTimeScope.allCases) { scope in
+                scopeTabButton(scope: scope, isSelected: selectedScope == scope)
+            }
+            scopeTabButton(label: "全部", icon: "list.bullet", isSelected: selectedScope == nil) {
+                selectedScope = nil
+            }
+        }
+    }
+
+    private func scopeTabButton(scope: TaskTimeScope, isSelected: Bool) -> some View {
+        scopeTabButton(label: scope.label, icon: scope.symbolName, color: scope.color, isSelected: isSelected) {
+            selectedScope = scope
+            newTaskTimeScope = scope
+        }
+    }
+
+    private func scopeTabButton(label: String, icon: String, color: Color = .secondary, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 3) {
+                Image(systemName: icon)
+                    .font(.caption2)
+                Text(label)
+                    .font(.caption2.weight(.medium))
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .foregroundStyle(isSelected ? color : .secondary)
+            .background(isSelected ? color.opacity(0.12) : .clear, in: Capsule())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func scopeEmptyView(_ scope: TaskTimeScope) -> some View {
+        VStack(spacing: 8) {
+            Image(systemName: scope.symbolName)
+                .font(.largeTitle)
+                .foregroundStyle(.quaternary)
+            Text("\(scope.label)暂无任务")
+                .font(.callout)
+                .foregroundStyle(.tertiary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.vertical, 40)
     }
 
     // MARK: - Subviews
@@ -147,6 +249,11 @@ struct TaskPopoverView: View {
                 },
                 onUpdateTitle: { newTitle in
                     store.updateTitle(id: task.id, newTitle: newTitle)
+                },
+                onSetTimeScope: { scope in
+                    withAnimation(.easeInOut(duration: 0.15)) {
+                        store.setTimeScope(id: task.id, scope: scope)
+                    }
                 }
             )
             .transition(
@@ -161,21 +268,59 @@ struct TaskPopoverView: View {
     private func pinnedSectionHeader(count: Int) -> some View {
         HStack(spacing: 4) {
             Image(systemName: "pin.fill")
-                .font(.caption2)
+                .font(.caption)
                 .foregroundStyle(.tertiary)
             Text("今天".uppercased())
-                .font(.caption2.weight(.semibold))
+                .font(.caption.weight(.semibold))
                 .foregroundStyle(.tertiary)
                 .tracking(0.5)
 
             Spacer()
 
             Text("\(count)")
-                .font(.caption2.weight(.medium))
+                .font(.caption.weight(.medium))
                 .foregroundStyle(.quaternary)
         }
         .padding(.horizontal, 16)
-        .padding(.top, 10)
+        .padding(.top, 12)
+        .padding(.bottom, 4)
+    }
+
+    private func timeScopeSectionHeader(scope: TaskTimeScope, count: Int) -> some View {
+        Button {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                if collapsedScopes.contains(scope) {
+                    collapsedScopes.remove(scope)
+                } else {
+                    collapsedScopes.insert(scope)
+                }
+            }
+        } label: {
+            HStack(spacing: 4) {
+                Image(systemName: collapsedScopes.contains(scope) ? "chevron.right" : "chevron.down")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.quaternary)
+                    .animation(.easeInOut(duration: 0.2), value: collapsedScopes.contains(scope))
+
+                Image(systemName: scope.symbolName)
+                    .font(.caption)
+                    .foregroundStyle(scope.color)
+
+                Text(scope.label.uppercased())
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+                    .tracking(0.5)
+
+                Spacer()
+
+                Text("\(count)")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.quaternary)
+            }
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 16)
+        .padding(.top, 12)
         .padding(.bottom, 4)
     }
 
@@ -185,46 +330,27 @@ struct TaskPopoverView: View {
                 isDoneExpanded.toggle()
             }
         } label: {
-            HStack {
+            HStack(spacing: 4) {
+                Image(systemName: isDoneExpanded ? "chevron.down" : "chevron.right")
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.quaternary)
+                    .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
+
                 Text("已完成".uppercased())
-                    .font(.caption2.weight(.semibold))
+                    .font(.caption.weight(.semibold))
                     .foregroundStyle(.tertiary)
                     .tracking(0.5)
 
                 Spacer()
 
                 Text("\(count)")
-                    .font(.caption2.weight(.medium))
+                    .font(.caption.weight(.medium))
                     .foregroundStyle(.quaternary)
-
-                Image(systemName: "chevron.down")
-                    .font(.caption2.weight(.medium))
-                    .foregroundStyle(.quaternary)
-                    .rotationEffect(isDoneExpanded ? .degrees(-180) : .zero)
-                    .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
             }
         }
         .buttonStyle(.plain)
         .padding(.horizontal, 16)
-        .padding(.top, 10)
-        .padding(.bottom, 4)
-    }
-
-    private func sectionHeader(title: String, count: Int) -> some View {
-        HStack {
-            Text(title.uppercased())
-                .font(.caption2.weight(.semibold))
-                .foregroundStyle(.tertiary)
-                .tracking(0.5)
-
-            Spacer()
-
-            Text("\(count)")
-                .font(.caption2.weight(.medium))
-                .foregroundStyle(.quaternary)
-        }
-        .padding(.horizontal, 16)
-        .padding(.top, 10)
+        .padding(.top, 12)
         .padding(.bottom, 4)
     }
 
@@ -234,7 +360,7 @@ struct TaskPopoverView: View {
         let trimmed = newTaskTitle.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-            store.addTask(title: trimmed, category: newTaskCategory)
+            store.addTask(title: trimmed, category: newTaskCategory, timeScope: newTaskTimeScope)
         }
         newTaskTitle = ""
     }

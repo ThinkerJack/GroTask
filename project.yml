@@ -2,16 +2,16 @@ name: GroTask
 options:
   bundleIdPrefix: com.grotask
   deploymentTarget:
-    macOS: "15.0"
+    macOS: "26.0"
   xcodeVersion: "15.0"
   generateEmptyDirectories: true
 
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
     CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: 6JX28238AJ
+    DEVELOPMENT_TEAM: 4KT56S2BX6
 
 targets:
   GroTask:
@@ -40,7 +40,7 @@ targets:
         CFBundleShortVersionString: "1.0.0"
         CFBundlePackageType: APPL
         CFBundleExecutable: GroTask
-        LSMinimumSystemVersion: "15.0"
+        LSMinimumSystemVersion: "26.0"
         NSHighResolutionCapable: true
 
   GroTaskiOS:
