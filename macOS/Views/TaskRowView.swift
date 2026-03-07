@@ -16,14 +16,17 @@ struct TaskRowView: View {
     var body: some View {
         Button {
             if isEditing { return }
-            if task.status == .todo {
-                withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-                    onCycleStatus()
-                }
+            withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
+                onCycleStatus()
             }
         } label: {
             HStack(spacing: 8) {
-                leadingButton
+                if task.status == .done {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.body)
+                        .foregroundStyle(Color(.systemGreen))
+                        .symbolRenderingMode(.hierarchical)
+                }
 
                 VStack(alignment: .leading, spacing: 1) {
                     if isEditing {
@@ -49,6 +52,20 @@ struct TaskRowView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+
+                if task.status == .todo {
+                    Circle()
+                        .fill(task.category.color)
+                        .frame(width: 7, height: 7)
+                        .opacity(isHovered ? 0.7 : 0.5)
+                        .animation(.easeInOut(duration: 0.1), value: isHovered)
+
+                    if task.isPinned {
+                        Image(systemName: "pin.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
 
                 if isHovered && !isEditing {
                     Button(action: onDelete) {
@@ -154,47 +171,6 @@ struct TaskRowView: View {
 
     private func cancelEdit() {
         isEditing = false
-    }
-
-    // MARK: - Leading Button
-
-    @ViewBuilder
-    private var leadingButton: some View {
-        if task.status == .todo {
-            Button(action: onToggleCategory) {
-                ZStack {
-                    Circle()
-                        .fill(task.category.color.opacity(isHovered ? 0.15 : 0))
-                        .frame(width: 24, height: 24)
-                        .animation(.easeInOut(duration: 0.1), value: isHovered)
-
-                    Image(systemName: "circle")
-                        .font(.body)
-                        .foregroundStyle(task.category.color)
-                }
-            }
-            .buttonStyle(.plain)
-            .frame(width: 24, height: 24)
-            .help(task.category.label)
-        } else {
-            Button(action: onCycleStatus) {
-                ZStack {
-                    Circle()
-                        .fill(Color(.systemGreen).opacity(isHovered ? 0.15 : 0))
-                        .frame(width: 24, height: 24)
-                        .animation(.easeInOut(duration: 0.1), value: isHovered)
-
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.body)
-                        .foregroundStyle(Color(.systemGreen))
-                        .symbolRenderingMode(.hierarchical)
-                        .symbolEffect(.bounce, value: task.status == .done)
-                }
-            }
-            .buttonStyle(.plain)
-            .frame(width: 24, height: 24)
-            .help("标记为未完成")
-        }
     }
 
     private func completedTimeText(_ date: Date) -> String {

@@ -1,14 +1,22 @@
 import SwiftUI
 
+private struct ContentHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct TaskPopoverView: View {
     var store: TaskStore
     @State private var newTaskTitle = ""
     @State private var newTaskCategory: TaskCategory = .work
     @State private var newTaskTimeScope: TaskTimeScope = .anytime
     @State private var selectedScope: TaskTimeScope? = .today
-    @State private var isDoneExpanded = false
-    @State private var collapsedScopes: Set<TaskTimeScope> = [.someday]
+    @State private var listContentHeight: CGFloat = 0
     @FocusState private var isInputFocused: Bool
+
+    private let maxListHeight: CGFloat = 360
 
     var body: some View {
         VStack(spacing: 0) {
@@ -53,7 +61,7 @@ struct TaskPopoverView: View {
                         .font(.callout)
                         .foregroundStyle(.tertiary)
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: .infinity)
                 .padding(.vertical, 40)
             } else if let scope = selectedScope {
                 // 筛选视图：只显示选中视角
@@ -62,8 +70,8 @@ struct TaskPopoverView: View {
                 if pinned.isEmpty && scopeTasks.isEmpty {
                     scopeEmptyView(scope)
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 0) {
+                    taskListScrollView {
+                        VStack(spacing: 0) {
                             if !pinned.isEmpty {
                                 pinnedSectionHeader(count: pinned.count)
                                 taskRows(pinned)
@@ -74,34 +82,26 @@ struct TaskPopoverView: View {
                     }
                 }
             } else {
-                // 全部视图：分组折叠
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        let pinned = store.pinnedTasks
-                        if !pinned.isEmpty {
-                            pinnedSectionHeader(count: pinned.count)
-                            taskRows(pinned)
-                        }
-
-                        ForEach(TaskTimeScope.allCases) { scope in
-                            let scopeTasks = store.tasks(for: scope)
-                            if !scopeTasks.isEmpty {
-                                timeScopeSectionHeader(scope: scope, count: scopeTasks.count)
-                                if !collapsedScopes.contains(scope) {
-                                    taskRows(scopeTasks)
-                                }
-                            }
-                        }
-
-                        let done = store.doneTasks
-                        if !done.isEmpty {
-                            doneSectionHeader(count: done.count)
-                            if isDoneExpanded {
-                                taskRows(done)
-                            }
-                        }
+                // 已完成视图
+                let done = store.doneTasks
+                if done.isEmpty {
+                    VStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle")
+                            .font(.largeTitle)
+                            .foregroundStyle(.quaternary)
+                        Text("暂无已完成任务")
+                            .font(.callout)
+                            .foregroundStyle(.tertiary)
                     }
-                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 40)
+                } else {
+                    taskListScrollView {
+                        VStack(spacing: 0) {
+                            taskRows(done)
+                        }
+                        .padding(.vertical, 4)
+                    }
                 }
             }
 
@@ -171,6 +171,28 @@ struct TaskPopoverView: View {
         .frame(width: 320)
     }
 
+    // MARK: - Task List ScrollView
+
+    @ViewBuilder
+    private func taskListScrollView<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        let height = min(max(listContentHeight, 1), maxListHeight)
+        ScrollView {
+            content()
+                .background(
+                    GeometryReader { geo in
+                        Color.clear
+                            .onAppear {
+                                listContentHeight = geo.size.height
+                            }
+                            .onChange(of: geo.size.height) { _, newHeight in
+                                listContentHeight = newHeight
+                            }
+                    }
+                )
+        }
+        .frame(height: height)
+    }
+
     // MARK: - Scope Tab Bar
 
     private var scopeTabBar: some View {
@@ -178,7 +200,7 @@ struct TaskPopoverView: View {
             ForEach(TaskTimeScope.allCases) { scope in
                 scopeTabButton(scope: scope, isSelected: selectedScope == scope)
             }
-            scopeTabButton(label: "全部", icon: "list.bullet", isSelected: selectedScope == nil) {
+            scopeTabButton(label: "完成", icon: "checkmark.circle", color: .green, isSelected: selectedScope == nil) {
                 selectedScope = nil
             }
         }
@@ -216,7 +238,7 @@ struct TaskPopoverView: View {
                 .font(.callout)
                 .foregroundStyle(.tertiary)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .padding(.vertical, 40)
     }
 
@@ -286,73 +308,6 @@ struct TaskPopoverView: View {
         .padding(.bottom, 4)
     }
 
-    private func timeScopeSectionHeader(scope: TaskTimeScope, count: Int) -> some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                if collapsedScopes.contains(scope) {
-                    collapsedScopes.remove(scope)
-                } else {
-                    collapsedScopes.insert(scope)
-                }
-            }
-        } label: {
-            HStack(spacing: 4) {
-                Image(systemName: collapsedScopes.contains(scope) ? "chevron.right" : "chevron.down")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.quaternary)
-                    .animation(.easeInOut(duration: 0.2), value: collapsedScopes.contains(scope))
-
-                Image(systemName: scope.symbolName)
-                    .font(.caption)
-                    .foregroundStyle(scope.color)
-
-                Text(scope.label.uppercased())
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.tertiary)
-                    .tracking(0.5)
-
-                Spacer()
-
-                Text("\(count)")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.quaternary)
-            }
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.top, 12)
-        .padding(.bottom, 4)
-    }
-
-    private func doneSectionHeader(count: Int) -> some View {
-        Button {
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isDoneExpanded.toggle()
-            }
-        } label: {
-            HStack(spacing: 4) {
-                Image(systemName: isDoneExpanded ? "chevron.down" : "chevron.right")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.quaternary)
-                    .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
-
-                Text("已完成".uppercased())
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.tertiary)
-                    .tracking(0.5)
-
-                Spacer()
-
-                Text("\(count)")
-                    .font(.caption.weight(.medium))
-                    .foregroundStyle(.quaternary)
-            }
-        }
-        .buttonStyle(.plain)
-        .padding(.horizontal, 16)
-        .padding(.top, 12)
-        .padding(.bottom, 4)
-    }
 
     // MARK: - Actions
 

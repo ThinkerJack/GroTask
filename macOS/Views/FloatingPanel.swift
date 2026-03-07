@@ -25,22 +25,10 @@ final class FloatingPanel: NSPanel {
         hasShadow = true
 
         let hostingView = NSHostingView(rootView: content())
-        hostingView.translatesAutoresizingMaskIntoConstraints = false
+        hostingView.sizingOptions = .intrinsicContentSize
 
-        let glassView = NSGlassEffectView()
-        glassView.translatesAutoresizingMaskIntoConstraints = false
-        glassView.cornerRadius = 12
-
-        glassView.addSubview(hostingView)
-        NSLayoutConstraint.activate([
-            hostingView.topAnchor.constraint(equalTo: glassView.topAnchor),
-            hostingView.bottomAnchor.constraint(equalTo: glassView.bottomAnchor),
-            hostingView.leadingAnchor.constraint(equalTo: glassView.leadingAnchor),
-            hostingView.trailingAnchor.constraint(equalTo: glassView.trailingAnchor),
-        ])
-
-        contentView = glassView
-        contentView?.wantsLayer = true
+        contentView = hostingView
+        contentMaxSize = NSSize(width: 320, height: 480)
     }
 
     override var canBecomeKey: Bool { true }

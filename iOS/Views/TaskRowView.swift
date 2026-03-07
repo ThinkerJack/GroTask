@@ -20,13 +20,7 @@ struct iOSTaskRowView: View {
             }
         } label: {
             HStack(spacing: 10) {
-                // 状态指示
-                if task.status == .todo {
-                    Image(systemName: "circle")
-                        .font(.body)
-                        .foregroundStyle(task.category.color)
-                        .accessibilityHidden(true)
-                } else {
+                if task.status == .done {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.body)
                         .foregroundStyle(Color(.systemGreen))
@@ -58,6 +52,19 @@ struct iOSTaskRowView: View {
                 }
 
                 Spacer()
+
+                if task.status == .todo {
+                    Circle()
+                        .fill(task.category.color)
+                        .frame(width: 7, height: 7)
+                        .opacity(0.5)
+
+                    if task.isPinned {
+                        Image(systemName: "pin.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.secondary)
+                    }
+                }
             }
             .padding(.vertical, 6)
             .contentShape(Rectangle())
