@@ -79,7 +79,7 @@ struct TaskRowView: View {
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.vertical, 12)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(rowBackground)

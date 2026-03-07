@@ -246,7 +246,12 @@ struct TaskPopoverView: View {
 
     @ViewBuilder
     private func taskRows(_ tasks: [TaskItem]) -> some View {
-        ForEach(tasks) { task in
+        ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
+            if index > 0 {
+                Divider()
+                    .opacity(0.3)
+                    .padding(.horizontal, 18)
+            }
             TaskRowView(
                 task: task,
                 onCycleStatus: {
