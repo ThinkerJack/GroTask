@@ -24,6 +24,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        NSApplication.shared.registerForRemoteNotifications()
         setupStatusItem()
         setupPanel()
         positionNearStatusItem()
@@ -49,7 +50,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     @objc private func togglePanel() {
+        store.refreshFromStore()
         panel.makeKeyAndOrderFront(nil)
+    }
+
+    func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
+        store.refreshFromStore()
     }
 
     private func positionNearStatusItem() {

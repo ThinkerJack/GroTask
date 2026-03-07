@@ -10,7 +10,9 @@
 		01744395373BF734FD123285 /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84904FC4FD60834E858CFE2 /* TaskItem.swift */; };
 		0E98BBFE3EA33D2E8AFE29EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E393D8D9937DA1CFFF018112 /* Assets.xcassets */; };
 		183B0DD11F8D7C2BC2271470 /* MigrationHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8650C24E0984BB5DD274CE5 /* MigrationHelperTests.swift */; };
+		1B2ABA629D51591765E7A42E /* CloudKitPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2064EEF4730CB2A2D81BDC /* CloudKitPoller.swift */; };
 		1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */; };
+		248A9225E09FD4B7304B8025 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 759499CBC71188ECA9380FC3 /* CloudKit.framework */; };
 		31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */; };
 		33985DE5929DBFDA32B5D715 /* TaskRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56E5944883F7AF7D789280CD /* TaskRowView.swift */; };
 		3C1BEDF1F75AD6B6F6C1CBEF /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB051CD07897FD290DE250 /* MigrationHelper.swift */; };
@@ -31,6 +33,8 @@
 		C87643C83976FAB310F1B013 /* MigrationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEB051CD07897FD290DE250 /* MigrationHelper.swift */; };
 		CE3A7FCC58984CE486357C66 /* PersistenceControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5143B0F47915EDF9F207340F /* PersistenceControllerTests.swift */; };
 		E1C09DD665D2E3E0036171BB /* TaskItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84904FC4FD60834E858CFE2 /* TaskItem.swift */; };
+		EB33AFECD547F27CCFDADF6F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 759499CBC71188ECA9380FC3 /* CloudKit.framework */; };
+		F79AC1D3AB23EB87080A3055 /* CloudKitPoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE2064EEF4730CB2A2D81BDC /* CloudKitPoller.swift */; };
 		F8B1EA707A4D4E7E12F12186 /* TaskStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A8827D1C32300857B3493AE /* TaskStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -55,10 +59,12 @@
 		5A0CA729E53B118C5BDEC4E4 /* GroTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6779C46C9A5F55D32464EF53 /* FloatingPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingPanel.swift; sourceTree = "<group>"; };
 		6A8827D1C32300857B3493AE /* TaskStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskStore.swift; sourceTree = "<group>"; };
+		759499CBC71188ECA9380FC3 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		7CEB051CD07897FD290DE250 /* MigrationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHelper.swift; sourceTree = "<group>"; };
 		7F33CA493759F38D7DDBA11C /* TaskPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskPopoverView.swift; sourceTree = "<group>"; };
 		987CDF5FEBF76393A6F009E7 /* GroTaskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskApp.swift; sourceTree = "<group>"; };
 		997CC809292CBE298873BED7 /* TaskRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskRowView.swift; sourceTree = "<group>"; };
+		AE2064EEF4730CB2A2D81BDC /* CloudKitPoller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitPoller.swift; sourceTree = "<group>"; };
 		B14A231275670B1AA533834C /* TaskItemEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskItemEntity.swift; sourceTree = "<group>"; };
 		B8650C24E0984BB5DD274CE5 /* MigrationHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationHelperTests.swift; sourceTree = "<group>"; };
 		C175CE3575785FBC3F639077 /* GroTaskiOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroTaskiOSApp.swift; sourceTree = "<group>"; };
@@ -70,6 +76,25 @@
 		ED79C3BE0E7A22A4D1E28B71 /* GroTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D4462948A6E5A082B30489 /* GroTask.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GroTask.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		24FE3813B774A4E84560AB6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB33AFECD547F27CCFDADF6F /* CloudKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42F02C709D2BA559AE82A0E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				248A9225E09FD4B7304B8025 /* CloudKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		0891FB10760865AFB637220E /* iOS */ = {
@@ -128,6 +153,7 @@
 				0891FB10760865AFB637220E /* iOS */,
 				2AB182F80E49216A07D227C7 /* macOS */,
 				DC0008958E55FDF92B95E703 /* Shared */,
+				EE1162E3556E029BC3DF8B40 /* Frameworks */,
 				E264CDDC6D94411158504DC7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -171,9 +197,18 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		EE1162E3556E029BC3DF8B40 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				759499CBC71188ECA9380FC3 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FA29D309337AD1148CF52EF6 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				AE2064EEF4730CB2A2D81BDC /* CloudKitPoller.swift */,
 				D2A92B7A69EAAF6122D71611 /* GroTask.xcdatamodeld */,
 				7CEB051CD07897FD290DE250 /* MigrationHelper.swift */,
 				38986F812FFD0CDDD8448612 /* PersistenceController.swift */,
@@ -191,6 +226,7 @@
 			buildPhases = (
 				ACD53E957C0C644AB6CF77A4 /* Sources */,
 				F289D85551FD4F866A7A5156 /* Resources */,
+				42F02C709D2BA559AE82A0E0 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -227,6 +263,7 @@
 			buildPhases = (
 				1FD7304CE38C17E5B2CFAD8C /* Sources */,
 				153A434D9FA431D8DEC96F0F /* Resources */,
+				24FE3813B774A4E84560AB6C /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -307,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F79AC1D3AB23EB87080A3055 /* CloudKitPoller.swift in Sources */,
 				AFBC340FEBF33A6EDFF19DB6 /* GroTask.xcdatamodeld in Sources */,
 				75D53573B00DA55F5DF4E8EC /* GroTaskiOSApp.swift in Sources */,
 				3C1BEDF1F75AD6B6F6C1CBEF /* MigrationHelper.swift in Sources */,
@@ -334,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B2ABA629D51591765E7A42E /* CloudKitPoller.swift in Sources */,
 				1FCB5578257954D69BAD9B08 /* FloatingPanel.swift in Sources */,
 				4C4DCE848364F91095F115C6 /* GroTask.xcdatamodeld in Sources */,
 				31F031F14514DDD10F7D3D1B /* GroTaskApp.swift in Sources */,

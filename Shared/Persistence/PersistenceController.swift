@@ -11,8 +11,15 @@ struct PersistenceController {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else if cloudKit {
             container = NSPersistentCloudKitContainer(name: "GroTask")
-            container.persistentStoreDescriptions.first?.cloudKitContainerOptions =
+            let description = container.persistentStoreDescriptions.first!
+            description.cloudKitContainerOptions =
                 NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.grotask.app")
+            // CloudKit 同步必需：开启持久化历史追踪
+            description.setOption(true as NSNumber,
+                forKey: NSPersistentHistoryTrackingKey)
+            // 远端变更到达时发出通知
+            description.setOption(true as NSNumber,
+                forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         } else {
             container = NSPersistentContainer(name: "GroTask")
         }
@@ -25,6 +32,7 @@ struct PersistenceController {
 
         container.viewContext.automaticallyMergesChangesFromParent = true
         container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.stalenessInterval = 0
 
         // 在 debug 模式下异步初始化 CloudKit schema，避免阻塞启动
         #if DEBUG

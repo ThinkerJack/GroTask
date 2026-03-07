@@ -7,6 +7,7 @@ final class TaskStore {
 
     private(set) var tasks: [TaskItem] = []
     private let context: NSManagedObjectContext
+    private var poller: CloudKitPoller?
 
     convenience init() {
         self.init(context: PersistenceController.shared.container.viewContext)
@@ -16,15 +17,29 @@ final class TaskStore {
         self.context = context
         fetchAll()
 
-        // 监听远端同步变更
+        // 监听 context 变更（本地修改 + CloudKit 合并 + Poller 写入都会触发）
         NotificationCenter.default.addObserver(
             self, selector: #selector(contextDidChange),
             name: .NSManagedObjectContextObjectsDidChange, object: context
         )
+
+        // 启动 CloudKit 轮询（每 10 秒拉取远端变更）
+        let poller = CloudKitPoller(context: context)
+        poller.startPolling(interval: 10)
+        self.poller = poller
+    }
+
+    deinit {
+        poller?.stopPolling()
     }
 
     @objc private func contextDidChange(_ notification: Notification) {
         fetchAll()
+    }
+
+    /// 手动触发一次远端同步
+    func refreshFromStore() {
+        poller?.fetchChanges()
     }
 
     // MARK: - Fetch
