@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GroTask - Redesign v5</title>
+<style>
+  :root {
+    --blue: #007AFF;
+    --orange: #FF9500;
+    --red: #FF3B30;
+    --yellow: #FFCC00;
+    --green: #34C759;
+    --gray: #8E8E93;
+
+    --bg-body: #E8E8ED;
+    --bg-panel: rgba(255,255,255,0.82);
+    --bg-hover: rgba(0,0,0,0.04);
+    --bg-active: rgba(0,0,0,0.07);
+    --bg-input: rgba(0,0,0,0.04);
+    --bg-input-focus: rgba(0,0,0,0.03);
+    --text-1: #1D1D1F;
+    --text-2: rgba(0,0,0,0.50);
+    --text-3: rgba(0,0,0,0.30);
+    --text-4: rgba(0,0,0,0.15);
+    --border: rgba(0,0,0,0.06);
+    --shadow: 0 12px 40px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(0,0,0,0.06);
+    --done-bg: rgba(52,199,89,0.06);
+    --menubar-bg: rgba(255,255,255,0.70);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-body: #111114;
+      --bg-panel: rgba(38,38,42,0.82);
+      --bg-hover: rgba(255,255,255,0.055);
+      --bg-active: rgba(255,255,255,0.08);
+      --bg-input: rgba(255,255,255,0.06);
+      --bg-input-focus: rgba(255,255,255,0.07);
+      --text-1: #F5F5F7;
+      --text-2: rgba(255,255,255,0.50);
+      --text-3: rgba(255,255,255,0.28);
+      --text-4: rgba(255,255,255,0.12);
+      --border: rgba(255,255,255,0.06);
+      --shadow: 0 12px 50px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.06);
+      --done-bg: rgba(52,199,89,0.08);
+      --menubar-bg: rgba(22,22,26,0.85);
+    }
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    background: var(--bg-body);
+    min-height: 100vh;
+    display: flex; justify-content: center;
+    padding-top: 44px;
+    -webkit-font-smoothing: antialiased;
+    color: var(--text-1);
+  }
+
+  /* Menu bar */
+  .menubar {
+    position:fixed;top:0;left:0;right:0;height:28px;
+    background:var(--menubar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    display:flex;align-items:center;justify-content:flex-end;
+    padding-right:16px;z-index:100;
+    border-bottom:0.5px solid var(--border);
+  }
+  .mb-ico { width:18px;height:18px;display:grid;place-items:center;cursor:pointer;opacity:0.55;transition:opacity 0.15s; }
+  .mb-ico:hover { opacity:0.9; }
+  .mb-ico svg { width:15px;height:15px; }
+
+  .shell { position:relative; }
+  .arrow { width:14px;height:7px;margin:0 auto;position:relative;z-index:2; }
+  .arrow::after {
+    content:'';position:absolute;left:1px;top:1px;
+    width:12px;height:12px;
+    background:var(--bg-panel);
+    transform:rotate(45deg);border-radius:2px 0;
+    box-shadow:-0.5px -0.5px 0 var(--border);
+  }
+  .panel {
+    width: 320px;
+    background: var(--bg-panel);
+    backdrop-filter: blur(60px) saturate(180%);
+    -webkit-backdrop-filter: blur(60px) saturate(180%);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    animation: drop 0.25s cubic-bezier(0.2,1,0.3,1);
+    transform-origin: top center;
+  }
+  @keyframes drop { from{opacity:0;transform:translateY(-5px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+  /* Header */
+  .hdr {
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 16px 6px;
+  }
+  .hdr h1 { font-size:15px;font-weight:600;letter-spacing:-0.2px; }
+  .hdr-btn {
+    width:24px;height:24px;
+    display:grid;place-items:center;cursor:pointer;
+    color:var(--text-2);transition:color 0.15s;
+    background:none;border:none;
+  }
+  .hdr-btn:hover { color:var(--text-1); }
+  .hdr-btn svg { width:20px;height:20px; }
+
+  /* Scope tabs */
+  .tabs { display:flex;gap:2px;padding:4px 12px 8px; }
+  .tab {
+    display:flex;align-items:center;gap:3px;
+    padding:4px 8px;
+    background:transparent;border:none;
+    border-radius:14px;cursor:pointer;
+    font-family:inherit;font-size:11.5px;font-weight:500;
+    color:var(--text-2);transition:all 0.15s;
+  }
+  .tab:hover { color:var(--text-1); }
+  .tab .tab-ico { font-size:11px; }
+  .tab.on {
+    color: var(--tc, var(--text-1));
+    background: var(--tbg, var(--bg-hover));
+  }
+  [data-s="quick"].on { --tc:color-mix(in srgb,var(--yellow) 85%,#000);--tbg:color-mix(in srgb,var(--yellow) 12%,transparent); }
+  [data-s="today"].on { --tc:var(--red);--tbg:color-mix(in srgb,var(--red) 10%,transparent); }
+  [data-s="any"].on   { --tc:var(--green);--tbg:color-mix(in srgb,var(--green) 10%,transparent); }
+  [data-s="some"].on  { --tc:var(--gray);--tbg:color-mix(in srgb,var(--gray) 10%,transparent); }
+  [data-s="all"].on   { --tc:var(--text-1);--tbg:var(--bg-hover); }
+
+  @media (prefers-color-scheme: dark) {
+    [data-s="quick"].on { --tc:var(--yellow); }
+  }
+
+  .sep { height:0.5px;background:var(--border);opacity:0.6; }
+
+  /* List */
+  .list { flex:1;overflow-y:auto;padding:4px 0;max-height:360px; }
+  .list::-webkit-scrollbar { width:4px; }
+  .list::-webkit-scrollbar-thumb { background:var(--text-4);border-radius:2px; }
+
+  /* Section header */
+  .sh { display:flex;align-items:center;gap:4px;padding:10px 16px 4px;cursor:pointer;user-select:none; }
+  .sh:hover .sl { color:var(--text-2); }
+  .chev { width:10px;display:flex;align-items:center;transition:transform 0.2s; }
+  .chev.shut { transform:rotate(-90deg); }
+  .chev svg { width:7px;height:7px;fill:var(--text-3); }
+  .sh-ico { display:flex;align-items:center; }
+  .sh-ico svg { width:11px;height:11px; }
+  .sl { font-size:10.5px;font-weight:600;color:var(--text-3);letter-spacing:0.5px;text-transform:uppercase;transition:color 0.15s; }
+  .sh-n { margin-left:auto;font-size:10.5px;font-weight:500;color:var(--text-4); }
+
+  /* ====== Task Row ====== */
+  .row {
+    display:flex;align-items:center;gap:8px;
+    padding:8px 12px;
+    margin:0 6px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background 0.1s;
+    position:relative;
+  }
+  .row:hover { background:var(--bg-hover); }
+  .row:active { background:var(--bg-active); }
+  .row:hover .del { opacity:1; }
+
+  /* Task title is primary - no circle in front */
+  .row-title {
+    flex:1;min-width:0;
+    font-size:13.5px;font-weight:400;
+    color:var(--text-1);
+    line-height:1.35;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .row-title.done {
+    color:var(--text-2);
+    opacity:0.6;
+    text-decoration:line-through;
+    text-decoration-color:color-mix(in srgb,var(--text-2) 50%,transparent);
+  }
+
+  /* Category dot - subtle, at the end */
+  .cat-dot {
+    width:7px;height:7px;
+    border-radius:50%;
+    flex-shrink:0;
+    opacity:0.5;
+    transition:opacity 0.15s;
+  }
+  .row:hover .cat-dot { opacity:0.7; }
+
+  /* Pin indicator */
+  .pin-tag {
+    font-size:9px;color:var(--text-3);flex-shrink:0;
+  }
+  .pin-tag svg { width:9px;height:9px;fill:var(--text-3); }
+
+  /* Completed time */
+  .row-meta { display:flex;flex-direction:column;gap:1px;flex:1;min-width:0; }
+  .row-time { font-size:10px;color:var(--text-3); }
+
+  /* Done row */
+  .row.done-row {
+    background:var(--done-bg);
+  }
+  .row.done-row:hover {
+    background:color-mix(in srgb,var(--green) 8%,transparent);
+  }
+  /* Done checkmark icon */
+  .done-check {
+    width:16px;height:16px;flex-shrink:0;
+    color:var(--green);display:flex;align-items:center;
+  }
+  .done-check svg { width:16px;height:16px;fill:currentColor; }
+
+  /* Delete button */
+  .del {
+    width:20px;height:20px;
+    display:grid;place-items:center;
+    border:none;background:transparent;
+    color:var(--red);opacity:0;
+    cursor:pointer;border-radius:5px;
+    transition:all 0.1s;flex-shrink:0;
+  }
+  .del:hover { background:color-mix(in srgb,var(--red) 10%,transparent); }
+  .del svg { width:14px;height:14px; }
+
+  /* Section collapse */
+  .sc { overflow:hidden;max-height:500px;transition:max-height 0.25s ease,opacity 0.15s;opacity:1; }
+  .sc.shut { max-height:0;opacity:0; }
+
+  /* Empty state */
+  .empty { display:flex;flex-direction:column;align-items:center;padding:40px 20px;gap:6px; }
+  .empty-ico { color:var(--text-4);opacity:0.3; }
+  .empty-ico svg { width:28px;height:28px; }
+  .empty span { font-size:12.5px;color:var(--text-3); }
+
+  /* Input bar */
+  .ibar { padding:6px 8px;flex-shrink:0; }
+  .ib {
+    display:flex;align-items:center;gap:8px;
+    padding:8px 12px;
+    background:var(--bg-input);
+    border-radius:8px;
+    transition:all 0.15s;
+  }
+  .ib:focus-within {
+    background:var(--bg-input-focus);
+    box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 20%,transparent);
+  }
+  .ib-dot {
+    width:10px;height:10px;border-radius:50%;
+    background:var(--blue);cursor:pointer;
+    flex-shrink:0;transition:transform 0.15s;
+  }
+  .ib-dot:hover { transform:scale(1.15); }
+  .ib-scope { display:flex;align-items:center;cursor:pointer;flex-shrink:0;transition:transform 0.12s; }
+  .ib-scope:hover { transform:scale(1.08); }
+  .ib-scope svg { width:16px;height:16px; }
+  .ib input {
+    flex:1;border:none;background:transparent;
+    font-family:inherit;font-size:13px;
+    color:var(--text-1);outline:none;
+  }
+  .ib input::placeholder { color:var(--text-3); }
+
+  .ft { display:flex;justify-content:flex-end;padding:2px 16px 8px; }
+  .ft button {
+    border:none;background:transparent;
+    font-family:inherit;font-size:10px;
+    color:var(--text-4);cursor:pointer;transition:color 0.12s;
+  }
+  .ft button:hover { color:var(--text-3); }
+
+  /* View toggle */
+  #view-scope, #view-all { display:none; }
+  #view-scope.active, #view-all.active { display:block; }
+
+  /* Row animation */
+  .row { animation:rowIn 0.2s ease backwards; }
+  @keyframes rowIn { from{opacity:0;transform:translateY(3px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<div class="menubar">
+  <div class="mb-ico" title="GroTask">
+    <svg viewBox="0 0 16 16" fill="none" stroke="var(--text-1)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6.2"/>
+      <path d="M5.2 8.2l1.8 1.8 3.8-3.8"/>
+    </svg>
+  </div>
+</div>
+
+<div class="shell">
+  <div class="arrow"></div>
+  <div class="panel">
+
+    <div class="hdr">
+      <h1>GroTask</h1>
+      <button class="hdr-btn" title="添加新任务">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="8.5"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="tabs">
+      <button class="tab" data-s="quick" onclick="switchTab(this,'quick')">
+        <span class="tab-ico">⚡</span><span>快速</span>
+      </button>
+      <button class="tab on" data-s="today" onclick="switchTab(this,'today')">
+        <span class="tab-ico">☀️</span><span>今天</span>
+      </button>
+      <button class="tab" data-s="any" onclick="switchTab(this,'any')">
+        <span class="tab-ico">👍</span><span>随时</span>
+      </button>
+      <button class="tab" data-s="some" onclick="switchTab(this,'some')">
+        <span class="tab-ico">☁️</span><span>将来</span>
+      </button>
+      <button class="tab" data-s="all" onclick="switchTab(this,'all')">
+        <span class="tab-ico">☰</span><span>全部</span>
+      </button>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="list">
+      <div id="view-scope" class="active">
+        <div id="scope-pinned"></div>
+        <div id="scope-tasks"></div>
+        <div id="scope-empty" class="empty" style="display:none">
+          <div class="empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg></div>
+          <span id="scope-empty-text">暂无任务</span>
+        </div>
+      </div>
+      <div id="view-all">
+        <div id="all-content"></div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="ibar">
+      <div class="ib">
+        <div class="ib-dot" id="ib-dot" onclick="tCat(this)"></div>
+        <div class="ib-scope" id="ib-scope" onclick="cSc(this)">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" fill="none" stroke="var(--red)" stroke-width="1.2"/><circle cx="8" cy="8" r="2" fill="var(--red)"/></svg>
+        </div>
+        <input type="text" placeholder="新任务..."/>
+      </div>
+    </div>
+
+    <div class="ft"><button>退出 GroTask</button></div>
+  </div>
+</div>
+
+<script>
+const tasks = [
+  { id:1, title:'完成季度报告', cat:'work', scope:'today', pinned:true, done:false },
+  { id:2, title:'买菜做饭', cat:'life', scope:'today', pinned:true, done:false },
+  { id:3, title:'代码审查 PR #42', cat:'work', scope:'today', pinned:false, done:false },
+  { id:4, title:'准备周会演示文档', cat:'work', scope:'today', pinned:false, done:false },
+  { id:5, title:'整理书架', cat:'life', scope:'today', pinned:false, done:false },
+  { id:6, title:'回复客户邮件', cat:'work', scope:'quick', pinned:false, done:false },
+  { id:7, title:'取快递', cat:'life', scope:'quick', pinned:false, done:false },
+  { id:8, title:'2.0 版本开发', cat:'work', scope:'any', pinned:false, done:false },
+  { id:9, title:'学习 Claude Code', cat:'work', scope:'any', pinned:false, done:false },
+  { id:10, title:'学习 Rust 语言', cat:'work', scope:'some', pinned:false, done:false },
+  { id:11, title:'规划家庭旅行', cat:'life', scope:'some', pinned:false, done:false },
+  { id:12, title:'部署 v1.9 到生产环境', cat:'work', scope:'today', pinned:false, done:true, time:'14:32' },
+  { id:13, title:'修复登录页面 Bug', cat:'work', scope:'quick', pinned:false, done:true, time:'11:20' },
+  { id:14, title:'给妈妈打电话', cat:'life', scope:'today', pinned:false, done:true, time:'03/06 20:15' },
+];
+
+const scopeLabels = { quick:'快速', today:'今天', any:'随时', some:'将来' };
+const scopeIcos = { quick:'⚡', today:'☀️', any:'👍', some:'☁️' };
+const scopeColors = { quick:'var(--yellow)', today:'var(--red)', any:'var(--green)', some:'var(--gray)' };
+
+// Render a single task row
+function makeRow(t, delay) {
+  const catColor = t.cat === 'work' ? 'var(--blue)' : 'var(--orange)';
+  const d = delay || 0;
+
+  if (t.done) {
+    return `<div class="row done-row" style="animation-delay:${d}s" onclick="toggleDone(${t.id})">
+      <div class="done-check"><svg viewBox="0 0 16 16"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zm3.7 5.3a.75.75 0 0 0-1.06-1.06L7 7.88 5.36 6.24a.75.75 0 1 0-1.06 1.06l2.3 2.3a.75.75 0 0 0 1.06 0l4.04-4.3z"/></svg></div>
+      <div class="row-meta">
+        <span class="row-title done">${t.title}</span>
+        ${t.time ? `<span class="row-time">${t.time}</span>` : ''}
+      </div>
+    </div>`;
+  }
+
+  return `<div class="row" style="animation-delay:${d}s" onclick="toggleDone(${t.id})">
+    <span class="row-title">${t.title}</span>
+    <div class="cat-dot" style="background:${catColor}" title="${t.cat==='work'?'工作':'生活'}"></div>
+    ${t.pinned ? '<div class="pin-tag"><svg viewBox="0 0 10 10"><path d="M6.2.8a.7.7 0 0 1 .9 0l2.1 2.1a.7.7 0 0 1 0 .9L7.5 5.5l-.3.4a1.4 1.4 0 0 1-.4.2l-1.4.6.6-1.4c0-.2.1-.3.2-.4L7.5 3.5 6.5 2.5 5 4 3.9 2.9zM3.5 6.5L1.5 8.5"/></svg></div>' : ''}
+    <button class="del" onclick="event.stopPropagation();delTask(${t.id})">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4.5" y1="4.5" x2="11.5" y2="11.5"/><line x1="11.5" y1="4.5" x2="4.5" y2="11.5"/></svg>
+    </button>
+  </div>`;
+}
+
+let currentScope = 'today';
+const collapsed = new Set(['some']);
+
+function switchTab(el, scope) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('on'));
+  el.classList.add('on');
+  currentScope = scope;
+  if (scope !== 'all') updateInputScope(scope);
+  render();
+}
+
+function render() {
+  if (currentScope === 'all') renderAll();
+  else renderScope(currentScope);
+}
+
+function renderScope(scope) {
+  document.getElementById('view-scope').classList.add('active');
+  document.getElementById('view-all').classList.remove('active');
+
+  const pinned = tasks.filter(t => t.pinned && !t.done);
+  const scopeTasks = tasks.filter(t => t.scope === scope && !t.pinned && !t.done);
+  const pe = document.getElementById('scope-pinned');
+  const te = document.getElementById('scope-tasks');
+  const ee = document.getElementById('scope-empty');
+
+  let di = 0;
+  if (pinned.length) {
+    pe.innerHTML = `<div class="sh">
+      <div class="sh-ico"><svg viewBox="0 0 10 10" style="width:10px;height:10px"><path d="M6.2.8a.7.7 0 0 1 .9 0l2.1 2.1a.7.7 0 0 1 0 .9L7.5 5.5l-.3.4a1.4 1.4 0 0 1-.4.2l-1.4.6.6-1.4c0-.2.1-.3.2-.4L7.5 3.5 6.5 2.5 5 4 3.9 2.9zM3.5 6.5L1.5 8.5" fill="var(--text-3)"/></svg></div>
+      <span class="sl">置顶</span><span class="sh-n">${pinned.length}</span>
+    </div>` + pinned.map(t => makeRow(t, (di++) * 0.03)).join('');
+    pe.style.display = 'block';
+  } else { pe.style.display = 'none'; }
+
+  if (scopeTasks.length) {
+    te.innerHTML = scopeTasks.map(t => makeRow(t, (di++) * 0.03)).join('');
+    te.style.display = 'block';
+  } else { te.style.display = 'none'; }
+
+  if (!pinned.length && !scopeTasks.length) {
+    document.getElementById('scope-empty-text').textContent = scopeLabels[scope] + '暂无任务';
+    ee.style.display = 'flex';
+  } else { ee.style.display = 'none'; }
+}
+
+function renderAll() {
+  document.getElementById('view-scope').classList.remove('active');
+  document.getElementById('view-all').classList.add('active');
+
+  const pinned = tasks.filter(t => t.pinned && !t.done);
+  const done = tasks.filter(t => t.done);
+  let html = '';
+  let di = 0;
+
+  // Pinned
+  if (pinned.length) {
+    html += `<div class="sh" onclick="togAll('pinned')">
+      <div class="chev${collapsed.has('pinned')?' shut':''}" id="ch-pinned"><svg viewBox="0 0 8 8"><path d="M2 1l4 3-4 3z"/></svg></div>
+      <div class="sh-ico"><svg viewBox="0 0 10 10" style="width:10px;height:10px"><path d="M6.2.8a.7.7 0 0 1 .9 0l2.1 2.1a.7.7 0 0 1 0 .9L7.5 5.5l-.3.4a1.4 1.4 0 0 1-.4.2l-1.4.6.6-1.4c0-.2.1-.3.2-.4L7.5 3.5 6.5 2.5 5 4 3.9 2.9zM3.5 6.5L1.5 8.5" fill="var(--text-3)"/></svg></div>
+      <span class="sl">置顶</span><span class="sh-n">${pinned.length}</span>
+    </div>`;
+    html += `<div class="sc${collapsed.has('pinned')?' shut':''}" id="sc-pinned">${pinned.map(t=>makeRow(t,(di++)*0.03)).join('')}</div>`;
+  }
+
+  // Each scope
+  for (const scope of ['today','quick','any','some']) {
+    const st = tasks.filter(t => t.scope===scope && !t.pinned && !t.done);
+    if (!st.length) continue;
+    const key = 'all-'+scope;
+    html += `<div class="sh" onclick="togAll('${key}')">
+      <div class="chev${collapsed.has(key)?' shut':''}" id="ch-${key}"><svg viewBox="0 0 8 8"><path d="M2 1l4 3-4 3z"/></svg></div>
+      <span class="sh-ico" style="font-size:11px;color:${scopeColors[scope]}">${scopeIcos[scope]}</span>
+      <span class="sl">${scopeLabels[scope]}</span><span class="sh-n">${st.length}</span>
+    </div>`;
+    html += `<div class="sc${collapsed.has(key)?' shut':''}" id="sc-${key}">${st.map(t=>makeRow(t,(di++)*0.03)).join('')}</div>`;
+  }
+
+  // Done
+  if (done.length) {
+    const key = 'all-done';
+    html += `<div class="sh" onclick="togAll('${key}')">
+      <div class="chev${collapsed.has(key)?' shut':''}" id="ch-${key}"><svg viewBox="0 0 8 8"><path d="M2 1l4 3-4 3z"/></svg></div>
+      <span class="sl">已完成</span><span class="sh-n">${done.length}</span>
+    </div>`;
+    html += `<div class="sc${collapsed.has(key)?' shut':''}" id="sc-${key}">${done.map(t=>makeRow(t,(di++)*0.03)).join('')}</div>`;
+  }
+
+  document.getElementById('all-content').innerHTML = html;
+}
+
+// Collapse defaults
+collapsed.add('all-some');
+collapsed.add('all-done');
+
+function togAll(key) {
+  if (collapsed.has(key)) collapsed.delete(key); else collapsed.add(key);
+  const sc = document.getElementById('sc-'+key);
+  const ch = document.getElementById('ch-'+key);
+  sc?.classList.toggle('shut');
+  ch?.classList.toggle('shut');
+}
+
+function toggleDone(id) {
+  const t = tasks.find(x=>x.id===id);
+  if (!t) return;
+  t.done = !t.done;
+  if (t.done) {
+    const now = new Date();
+    t.time = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+    t.pinned = false;
+  } else { t.time = null; }
+  render();
+}
+
+function delTask(id) {
+  const i = tasks.findIndex(x=>x.id===id);
+  if (i>=0) tasks.splice(i,1);
+  render();
+}
+
+// Input controls
+let ci=0;
+function tCat(el) {
+  ci=(ci+1)%2;
+  el.style.background = ci===0?'var(--blue)':'var(--orange)';
+}
+
+const scopeOrder=['today','quick','any','some'];
+const scopeSvgs = {
+  today:'<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5" fill="none" stroke="var(--red)" stroke-width="1.2"/><circle cx="8" cy="8" r="2" fill="var(--red)"/></svg>',
+  quick:'<svg viewBox="0 0 16 16"><path d="M9.5 2L5 8.5h3.5L7 14l5.5-6.5H9z" fill="var(--yellow)" stroke="color-mix(in srgb,var(--yellow) 70%,#000)" stroke-width="0.5"/></svg>',
+  any:'<svg viewBox="0 0 16 16"><path d="M8 2.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM3.5 12C3.5 10.2 5.5 9 8 9s4.5 1.2 4.5 3v.5h-9z" fill="var(--green)"/></svg>',
+  some:'<svg viewBox="0 0 16 16"><path d="M3 10a2.8 2.8 0 0 1 0-5.5A4.2 4.2 0 0 1 11 3 3.3 3.3 0 0 1 13 6c0 1.8-1.3 3.2-3.2 3.5H3z" fill="var(--gray)"/></svg>',
+};
+let si=0;
+function updateInputScope(scope) {
+  si = scopeOrder.indexOf(scope);
+  document.getElementById('ib-scope').innerHTML = scopeSvgs[scope];
+}
+function cSc(el) {
+  si = (si+1)%4;
+  el.innerHTML = scopeSvgs[scopeOrder[si]];
+}
+
+render();
+</script>
+</body>
+</html>
