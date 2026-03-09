@@ -30,6 +30,7 @@ BUNDLE_ID="com.grotask.app"
 TEAM_ID="${TEAM_ID:-4KT56S2BX6}"
 APPLE_ID="${APPLE_ID:-jimwuemail@gmail.com}"
 APP_PASSWORD="${APP_PASSWORD:-}"
+KEYCHAIN_PROFILE="GroTask-Notarize"
 
 BUILD_DIR="build"
 ARCHIVE_PATH="${BUILD_DIR}/GroTask.xcarchive"
@@ -56,10 +57,19 @@ check_prerequisites() {
         error "未找到签名证书: $SIGNING_IDENTITY"
     fi
 
-    # 检查 App 专用密码
-    if [ -z "$APP_PASSWORD" ]; then
-        read -rsp "请输入 App 专用密码: " APP_PASSWORD
+    # 检查凭证: 优先使用 Keychain profile, 其次使用 APP_PASSWORD
+    if [ -n "$APP_PASSWORD" ]; then
+        info "使用 APP_PASSWORD 环境变量"
+        USE_KEYCHAIN=false
+    elif xcrun notarytool history --keychain-profile "$KEYCHAIN_PROFILE" 2>/dev/null | head -1 | grep -q .; then
+        info "使用 Keychain profile: $KEYCHAIN_PROFILE"
+        USE_KEYCHAIN=true
+    else
+        warn "未找到 Keychain profile '$KEYCHAIN_PROFILE'，请先运行:"
+        warn "  xcrun notarytool store-credentials \"$KEYCHAIN_PROFILE\" --apple-id \"$APPLE_ID\" --team-id \"$TEAM_ID\" --password <APP_PASSWORD>"
+        read -rsp "或直接输入 App 专用密码: " APP_PASSWORD
         echo
+        USE_KEYCHAIN=false
     fi
 
     # 检查 ExportOptions.plist
@@ -148,11 +158,17 @@ package() {
 notarize() {
     info "步骤 4/5: 提交公证..."
 
-    xcrun notarytool submit "$ZIP_PATH" \
-        --apple-id "$APPLE_ID" \
-        --team-id "$TEAM_ID" \
-        --password "$APP_PASSWORD" \
-        --wait
+    if [ "$USE_KEYCHAIN" = true ]; then
+        xcrun notarytool submit "$ZIP_PATH" \
+            --keychain-profile "$KEYCHAIN_PROFILE" \
+            --wait
+    else
+        xcrun notarytool submit "$ZIP_PATH" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$TEAM_ID" \
+            --password "$APP_PASSWORD" \
+            --wait
+    fi
 
     # 检查结果
     if [ $? -ne 0 ]; then

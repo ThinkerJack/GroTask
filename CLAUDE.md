@@ -75,6 +75,23 @@ APP_PASSWORD="xxxx-xxxx-xxxx-xxxx" ./scripts/notarize.sh
 - **Hardened Runtime 必须启用**: archive 时设置 `ENABLE_HARDENED_RUNTIME=YES`, 否则公证会被拒
 - 导出使用 `ExportOptions.plist` (method: developer-id, signingStyle: manual)
 - 公证后的 app 位于 `build/export/GroTask.app`
+- 公证凭证存储在 macOS 钥匙串，profile 名称为 `GroTask-Notarize`，脚本会自动读取
+
+### 新电脑首次配置
+
+在新电脑上首次公证前，需要执行一次：
+
+```bash
+# 1. 存储公证凭证到钥匙串
+xcrun notarytool store-credentials "GroTask-Notarize" \
+  --apple-id "jimwuemail@gmail.com" \
+  --team-id "4KT56S2BX6" \
+  --password "fsfl-kraz-oens-febj"
+
+# 2. 确保已安装 Developer ID Application 证书和 Provisioning Profile
+```
+
+之后直接 `./scripts/notarize.sh` 即可，无需传密码。
 
 ## Conventions
 
