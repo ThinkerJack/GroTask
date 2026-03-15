@@ -81,6 +81,9 @@ struct TaskListView: View {
                 .listStyle(.insetGrouped)
                 .contentMargins(.bottom, 70)
                 .scrollDismissesKeyboard(.interactively)
+                .refreshable {
+                    store.refreshFromStore()
+                }
             }
         } else {
             // 全部视图
@@ -158,6 +161,9 @@ struct TaskListView: View {
             .listStyle(.insetGrouped)
             .contentMargins(.bottom, 70)
             .scrollDismissesKeyboard(.interactively)
+            .refreshable {
+                store.refreshFromStore()
+            }
         }
     }
 

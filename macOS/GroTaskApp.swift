@@ -55,7 +55,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
-        store.refreshFromStore()
+        // CloudKit import and UI refresh are driven by NSPersistentCloudKitContainer events.
     }
 
     private func positionNearStatusItem() {

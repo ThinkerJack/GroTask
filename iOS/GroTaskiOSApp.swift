@@ -32,4 +32,12 @@ final class AppDelegateiOS: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
         return true
     }
+
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        completionHandler(.newData)
+    }
 }

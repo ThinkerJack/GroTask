@@ -6,40 +6,83 @@ import SwiftUI
 final class TaskStore {
 
     private(set) var tasks: [TaskItem] = []
+    private(set) var isSyncing = false
+    private(set) var lastSyncDate: Date?
+    private(set) var syncError: Error?
+
     private let context: NSManagedObjectContext
-    private var poller: CloudKitPoller?
 
     convenience init() {
-        self.init(context: PersistenceController.shared.container.viewContext)
+        let persistence = PersistenceController.shared
+        self.init(context: persistence.container.viewContext, container: persistence.container)
     }
 
-    init(context: NSManagedObjectContext) {
+    convenience init(context: NSManagedObjectContext) {
+        self.init(context: context, container: NSPersistentContainer(name: "GroTask"))
+    }
+
+    private init(context: NSManagedObjectContext, container: NSPersistentContainer) {
         self.context = context
         fetchAll()
 
-        // 监听 context 变更（本地修改 + CloudKit 合并 + Poller 写入都会触发）
         NotificationCenter.default.addObserver(
             self, selector: #selector(contextDidChange),
             name: .NSManagedObjectContextObjectsDidChange, object: context
         )
 
-        // 启动 CloudKit 轮询（每 10 秒拉取远端变更）
-        let poller = CloudKitPoller(context: context)
-        poller.startPolling(interval: 10)
-        self.poller = poller
-    }
-
-    deinit {
-        poller?.stopPolling()
+        if let cloudKitContainer = container as? NSPersistentCloudKitContainer {
+            NotificationCenter.default.addObserver(
+                self, selector: #selector(cloudKitEventChanged),
+                name: NSPersistentCloudKitContainer.eventChangedNotification,
+                object: cloudKitContainer
+            )
+        }
     }
 
     @objc private func contextDidChange(_ notification: Notification) {
-        fetchAll()
+        if Thread.isMainThread {
+            fetchAll()
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.fetchAll()
+            }
+        }
     }
 
-    /// 手动触发一次远端同步
+    @objc private func cloudKitEventChanged(_ notification: Notification) {
+        guard let event = notification.userInfo?[
+            NSPersistentCloudKitContainer.eventNotificationUserInfoKey
+        ] as? NSPersistentCloudKitContainer.Event else {
+            return
+        }
+
+        guard event.type == .import else { return }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            if event.endDate == nil {
+                self.isSyncing = true
+                return
+            }
+
+            self.isSyncing = false
+            if let error = event.error {
+                self.syncError = error
+                print("CloudKit import failed: \(error)")
+                return
+            }
+
+            self.syncError = nil
+            self.lastSyncDate = Date()
+            self.context.refreshAllObjects()
+            self.fetchAll()
+        }
+    }
+
+    /// 丢弃 viewContext 缓存并重新从本地 store 读取。
     func refreshFromStore() {
-        poller?.fetchChanges()
+        context.refreshAllObjects()
+        fetchAll()
     }
 
     // MARK: - Fetch
