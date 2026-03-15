@@ -71,6 +71,7 @@ targets:
         GENERATE_INFOPLIST_FILE: "YES"
         SWIFT_VERSION: "5.9"
         INFOPLIST_KEY_UIBackgroundModes: remote-notification
+        ITSAppUsesNonExemptEncryption: false
 
   GroTaskTests:
     type: bundle.unit-test
