@@ -87,15 +87,6 @@ struct iOSTaskRowView: View {
                 }
 
                 Button {
-                    withAnimation { onTogglePin() }
-                } label: {
-                    Label(
-                        task.isPinned ? "取消置顶" : "置顶到今天",
-                        systemImage: task.isPinned ? "pin.slash" : "pin"
-                    )
-                }
-
-                Button {
                     withAnimation { onToggleCategory() }
                 } label: {
                     Label(

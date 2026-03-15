@@ -25,12 +25,22 @@ struct TaskListView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        store.refreshFromStore()
-                    } label: {
-                        Image(systemName: "arrow.clockwise")
+                    HStack(spacing: 6) {
+                        Button {
+                            store.refreshFromStore()
+                        } label: {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                        .accessibilityLabel("刷新同步")
+
+                        if store.isSyncing {
+                            ProgressView()
+                                .controlSize(.small)
+                        } else if store.syncError != nil {
+                            Image(systemName: "exclamationmark.icloud")
+                                .foregroundStyle(.red)
+                        }
                     }
-                    .accessibilityLabel("刷新同步")
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -86,83 +96,28 @@ struct TaskListView: View {
                 }
             }
         } else {
-            // 全部视图
-            List {
-                let pinned = store.pinnedTasks
-                if !pinned.isEmpty {
-                    Section {
-                        taskRows(pinned)
-                    } header: {
-                        Label("置顶", systemImage: "pin.fill")
-                    }
+            // 已完成视图
+            let done = store.doneTasks
+            if done.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle")
+                        .font(.largeTitle)
+                        .foregroundStyle(.quaternary)
+                    Text("暂无已完成任务")
+                        .font(.callout)
+                        .foregroundStyle(.tertiary)
                 }
-
-                ForEach(TaskTimeScope.allCases) { scope in
-                    let scopeTasks = store.tasks(for: scope)
-                    if !scopeTasks.isEmpty {
-                        Section {
-                            if !collapsedScopes.contains(scope) {
-                                taskRows(scopeTasks)
-                            }
-                        } header: {
-                            Button {
-                                withAnimation {
-                                    if collapsedScopes.contains(scope) {
-                                        collapsedScopes.remove(scope)
-                                    } else {
-                                        collapsedScopes.insert(scope)
-                                    }
-                                }
-                            } label: {
-                                HStack {
-                                    Label(scope.label, systemImage: scope.symbolName)
-                                        .foregroundStyle(scope.color)
-                                    Spacer()
-                                    Text("\(scopeTasks.count)")
-                                        .foregroundStyle(.tertiary)
-                                    Image(systemName: "chevron.down")
-                                        .font(.caption)
-                                        .foregroundStyle(.tertiary)
-                                        .rotationEffect(collapsedScopes.contains(scope) ? .degrees(-90) : .zero)
-                                        .animation(.easeInOut(duration: 0.2), value: collapsedScopes.contains(scope))
-                                }
-                            }
-                            .foregroundStyle(.primary)
-                        }
-                    }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                List {
+                    taskRows(done)
                 }
-
-                let done = store.doneTasks
-                if !done.isEmpty {
-                    Section {
-                        if isDoneExpanded {
-                            taskRows(done)
-                        }
-                    } header: {
-                        Button {
-                            withAnimation { isDoneExpanded.toggle() }
-                        } label: {
-                            HStack {
-                                Text("已完成")
-                                Spacer()
-                                Text("\(done.count)")
-                                    .foregroundStyle(.tertiary)
-                                Image(systemName: "chevron.down")
-                                    .font(.caption)
-                                    .foregroundStyle(.tertiary)
-                                    .rotationEffect(isDoneExpanded ? .degrees(-180) : .zero)
-                                    .animation(.easeInOut(duration: 0.2), value: isDoneExpanded)
-                            }
-                        }
-                        .foregroundStyle(.primary)
-                    }
+                .listStyle(.insetGrouped)
+                .contentMargins(.bottom, 70)
+                .scrollDismissesKeyboard(.interactively)
+                .refreshable {
+                    store.refreshFromStore()
                 }
-            }
-            .listStyle(.insetGrouped)
-            .contentMargins(.bottom, 70)
-            .scrollDismissesKeyboard(.interactively)
-            .refreshable {
-                store.refreshFromStore()
             }
         }
     }

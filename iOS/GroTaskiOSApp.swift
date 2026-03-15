@@ -1,5 +1,8 @@
 import SwiftUI
 import UIKit
+import os.log
+
+private let syncLog = Logger(subsystem: "com.grotask.app", category: "CloudKitSync")
 
 @main
 struct GroTaskiOSApp: App {
@@ -33,11 +36,20 @@ final class AppDelegateiOS: NSObject, UIApplicationDelegate {
         return true
     }
 
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        syncLog.info("推送注册成功, token 长度: \(deviceToken.count)")
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        syncLog.error("推送注册失败: \(error.localizedDescription, privacy: .public)")
+    }
+
     func application(
         _ application: UIApplication,
         didReceiveRemoteNotification userInfo: [AnyHashable: Any],
         fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
     ) {
+        syncLog.info("收到远程推送通知")
         completionHandler(.newData)
     }
 }

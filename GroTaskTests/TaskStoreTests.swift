@@ -160,4 +160,24 @@ final class TaskStoreTests: XCTestCase {
 
         XCTAssertEqual(store.tasks(for: .quick).count, 0)
     }
+
+    @MainActor
+    func testRefreshesAfterExternalContextSave() throws {
+        XCTAssertEqual(store.tasks.count, 0)
+
+        let entity = TaskItemEntity(context: context)
+        entity.id = UUID()
+        entity.title = "Imported task"
+        entity.statusRaw = Int16(TaskStatus.todo.rawValue)
+        entity.categoryRaw = 0
+        entity.isPinned = false
+        entity.createdAt = Date()
+        entity.timeScopeRaw = Int16(TaskTimeScope.anytime.rawValue)
+
+        try context.save()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+
+        XCTAssertEqual(store.tasks.count, 1)
+        XCTAssertEqual(store.tasks[0].title, "Imported task")
+    }
 }

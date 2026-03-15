@@ -51,14 +51,16 @@ GroTask is a dual-platform (macOS 15+ / iOS 17+) task management app using Swift
 
 Tests use in-memory Core Data containers (`/dev/null` store URL) for isolation. Test files cover: persistence, store CRUD/filtering, model logic, and migration.
 
-## Notarization (macOS)
+## Distribution
+
+### macOS 公证
 
 ```bash
-# 一键公证 (需要设置环境变量 APP_PASSWORD)
-APP_PASSWORD="xxxx-xxxx-xxxx-xxxx" ./scripts/notarize.sh
+# 一键公证
+./scripts/notarize.sh
+# 安装到 Applications
+cp -R build/export/GroTask.app /Applications/
 ```
-
-### Key Points
 
 - **签名证书**: Developer ID Application: Chao Wu (4KT56S2BX6)
 - **Provisioning Profile**: GroTask Developer ID (Developer ID Application 类型, 在 Apple Developer 后台创建)
@@ -68,9 +70,21 @@ APP_PASSWORD="xxxx-xxxx-xxxx-xxxx" ./scripts/notarize.sh
 - 公证后的 app 位于 `build/export/GroTask.app`
 - 公证凭证存储在 macOS 钥匙串，profile 名称为 `GroTask-Notarize`，脚本会自动读取
 
-### 新电脑首次配置
+### iOS TestFlight
 
-在新电脑上首次公证前，需要执行一次：
+```bash
+# 一键上传 TestFlight（自动递增 build number）
+./scripts/testflight.sh
+```
+
+- **Bundle ID**: `com.grotask.ios`
+- **App Store Connect App ID**: 6760607036
+- 导出使用 `ExportOptions-iOS.plist` (method: app-store, signingStyle: automatic)
+- 需要 fastlane 已登录 (`brew install fastlane`)
+- App 专用密码已硬编码在脚本中（与公证相同）
+- **App icon 不能有 alpha 通道**，否则上传验证失败
+
+### 新电脑首次配置
 
 ```bash
 # 1. 存储公证凭证到钥匙串
@@ -80,12 +94,24 @@ xcrun notarytool store-credentials "GroTask-Notarize" \
   --password "fsfl-kraz-oens-febj"
 
 # 2. 确保已安装 Developer ID Application 证书和 Provisioning Profile
+# 3. 安装 fastlane: brew install fastlane
+# 4. 首次运行 fastlane 需要交互式登录 Apple ID + 2FA
 ```
 
-之后直接 `./scripts/notarize.sh` 即可，无需传密码。
+## CloudKit Sync
+
+- 容器: `iCloud.com.grotask.app`
+- **Development 和 Production 是隔离的数据环境**，数据不互通
+- Debug 包（Xcode Run）→ Development 环境；正式包（公证/TestFlight）→ Production 环境
+- 修改 Core Data model 后，需要去 CloudKit Dashboard 将 schema 从 Development 部署到 Production
+- Debug 包下 CloudKit 静默推送不可靠，实时同步可能不工作，属已知限制
+- Production 环境下同步正常，延迟通常几秒到十几秒
 
 ## Conventions
 
 - UI text and comments are in Chinese
 - Animation: spring for status changes, easeInOut for toggles, asymmetric transitions for list updates
-- Entitlements are per-target: `macOS/GroTask.entitlements`, `iOS/GroTaskiOS.entitlements`
+- Entitlements are per-target: `macOS/GroTask-Debug.entitlements` / `macOS/GroTask-Release.entitlements`, `iOS/GroTaskiOS.entitlements`
+- macOS Release entitlements 中 `aps-environment: production`，Debug 为 `development`
+- iOS 右键菜单：编辑、切换类别、时间视角、删除（无置顶）
+- macOS 右键菜单：编辑、切换类别、时间视角（无置顶、无删除，删除用 hover 图标）

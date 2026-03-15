@@ -1,6 +1,9 @@
 import Foundation
 import CoreData
+import os.log
 import SwiftUI
+
+private let syncLog = Logger(subsystem: "com.grotask.app", category: "CloudKitSync")
 
 @Observable
 final class TaskStore {
@@ -11,6 +14,8 @@ final class TaskStore {
     private(set) var syncError: Error?
 
     private let context: NSManagedObjectContext
+    private var observerTokens: [NSObjectProtocol] = []
+    private var pendingRemoteRefreshWorkItem: DispatchWorkItem?
 
     convenience init() {
         let persistence = PersistenceController.shared
@@ -25,34 +30,82 @@ final class TaskStore {
         self.context = context
         fetchAll()
 
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(contextDidChange),
-            name: .NSManagedObjectContextObjectsDidChange, object: context
+        let center = NotificationCenter.default
+        observerTokens.append(
+            center.addObserver(
+                forName: .NSManagedObjectContextObjectsDidChange,
+                object: context,
+                queue: nil
+            ) { [weak self] _ in
+                self?.scheduleFetchAll()
+            }
         )
 
         if let cloudKitContainer = container as? NSPersistentCloudKitContainer {
-            NotificationCenter.default.addObserver(
-                self, selector: #selector(cloudKitEventChanged),
-                name: NSPersistentCloudKitContainer.eventChangedNotification,
-                object: cloudKitContainer
+            syncLog.info("注册 CloudKit 事件通知")
+            observerTokens.append(
+                center.addObserver(
+                    forName: NSPersistentCloudKitContainer.eventChangedNotification,
+                    object: nil,
+                    queue: nil
+                ) { [weak self] notification in
+                    self?.handleCloudKitEventChanged(notification)
+                }
             )
-        }
-    }
 
-    @objc private func contextDidChange(_ notification: Notification) {
-        if Thread.isMainThread {
-            fetchAll()
+            observerTokens.append(
+                center.addObserver(
+                    forName: .NSPersistentStoreRemoteChange,
+                    object: cloudKitContainer.persistentStoreCoordinator,
+                    queue: nil
+                ) { [weak self] _ in
+                    self?.scheduleRemoteRefreshFallback()
+                }
+            )
         } else {
-            DispatchQueue.main.async { [weak self] in
-                self?.fetchAll()
-            }
+            syncLog.warning("容器不是 NSPersistentCloudKitContainer，CloudKit 同步不可用")
         }
     }
 
-    @objc private func cloudKitEventChanged(_ notification: Notification) {
+    deinit {
+        pendingRemoteRefreshWorkItem?.cancel()
+        let center = NotificationCenter.default
+        for token in observerTokens {
+            center.removeObserver(token)
+        }
+    }
+
+    private func handleCloudKitEventChanged(_ notification: Notification) {
         guard let event = notification.userInfo?[
             NSPersistentCloudKitContainer.eventNotificationUserInfoKey
         ] as? NSPersistentCloudKitContainer.Event else {
+            return
+        }
+
+        let typeName: String
+        switch event.type {
+        case .setup:  typeName = "setup"
+        case .import: typeName = "import"
+        case .export: typeName = "export"
+        @unknown default: typeName = "unknown"
+        }
+
+        if let endDate = event.endDate {
+            let duration = endDate.timeIntervalSince(event.startDate)
+            if let error = event.error {
+                syncLog.error("CloudKit \(typeName, privacy: .public) 失败 (耗时 \(duration, format: .fixed(precision: 1))s): \(error.localizedDescription, privacy: .public)")
+            } else {
+                syncLog.info("CloudKit \(typeName, privacy: .public) 完成 (耗时 \(duration, format: .fixed(precision: 1))s)")
+            }
+        } else {
+            syncLog.info("CloudKit \(typeName, privacy: .public) 开始...")
+        }
+
+        // setup 失败时记录到 syncError，方便排查
+        if event.type == .setup, event.endDate != nil, let error = event.error {
+            DispatchQueue.main.async { [weak self] in
+                self?.syncError = error
+            }
             return
         }
 
@@ -65,17 +118,39 @@ final class TaskStore {
                 return
             }
 
+            self.pendingRemoteRefreshWorkItem?.cancel()
             self.isSyncing = false
             if let error = event.error {
                 self.syncError = error
-                print("CloudKit import failed: \(error)")
                 return
             }
 
             self.syncError = nil
-            self.lastSyncDate = Date()
-            self.context.refreshAllObjects()
-            self.fetchAll()
+            self.lastSyncDate = event.endDate ?? Date()
+            self.refreshFromStore()
+        }
+    }
+
+    private func scheduleFetchAll() {
+        if Thread.isMainThread {
+            fetchAll()
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.fetchAll()
+            }
+        }
+    }
+
+    private func scheduleRemoteRefreshFallback() {
+        pendingRemoteRefreshWorkItem?.cancel()
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            syncLog.info("远端变更 fallback 刷新")
+            self.refreshFromStore()
+        }
+        pendingRemoteRefreshWorkItem = workItem
+        DispatchQueue.main.async {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: workItem)
         }
     }
 

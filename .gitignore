@@ -6,6 +6,7 @@ xcuserdata/
 # Build
 build/
 DerivedData/
+.deriveddata/
 
 # OS
 .DS_Store
