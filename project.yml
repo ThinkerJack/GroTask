@@ -28,7 +28,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.grotask.app
         PRODUCT_NAME: GroTask
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "1"
+        CURRENT_PROJECT_VERSION: "2"
         COMBINE_HIDPI_IMAGES: true
       configs:
         Debug:
@@ -63,7 +63,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.grotask.ios
         PRODUCT_NAME: GroTask
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "1"
+        CURRENT_PROJECT_VERSION: "2"
         CODE_SIGN_ENTITLEMENTS: iOS/GroTaskiOS.entitlements
         INFOPLIST_KEY_UILaunchScreen_Generation: true
         INFOPLIST_KEY_UISupportedInterfaceOrientations: "UIInterfaceOrientationPortrait"
