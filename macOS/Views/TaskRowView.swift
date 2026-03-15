@@ -5,7 +5,6 @@ struct TaskRowView: View {
     let onCycleStatus: () -> Void
     let onDelete: () -> Void
     let onToggleCategory: () -> Void
-    let onTogglePin: () -> Void
     let onUpdateTitle: (String) -> Void
     let onSetTimeScope: (TaskTimeScope) -> Void
     @State private var isHovered = false
@@ -60,11 +59,6 @@ struct TaskRowView: View {
                         .opacity(isHovered ? 0.7 : 0.5)
                         .animation(.easeInOut(duration: 0.1), value: isHovered)
 
-                    if task.isPinned {
-                        Image(systemName: "pin.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                    }
                 }
 
                 if isHovered && !isEditing {
@@ -98,17 +92,6 @@ struct TaskRowView: View {
                 }
 
                 Button {
-                    withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-                        onTogglePin()
-                    }
-                } label: {
-                    Label(
-                        task.isPinned ? "取消置顶" : "置顶到今天",
-                        systemImage: task.isPinned ? "pin.slash" : "pin"
-                    )
-                }
-
-                Button {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         onToggleCategory()
                     }
@@ -135,14 +118,6 @@ struct TaskRowView: View {
                     Label("时间视角", systemImage: "clock")
                 }
             }
-
-            Button(role: .destructive) {
-                withAnimation(.easeOut(duration: 0.2)) {
-                    onDelete()
-                }
-            } label: {
-                Label("删除任务", systemImage: "trash")
-            }
         }
         .onHover { hovering in
             withAnimation(.easeInOut(duration: 0.1)) {
@@ -150,7 +125,7 @@ struct TaskRowView: View {
             }
         }
         .padding(.horizontal, 6)
-        .id("\(task.id)-\(task.status)-\(task.isPinned)-\(task.category)-\(task.timeScope)")
+        .id("\(task.id)-\(task.status)-\(task.category)-\(task.timeScope)")
     }
 
     // MARK: - Editing

@@ -30,6 +30,17 @@ struct TaskPopoverView: View {
                 Spacer()
 
                 Button {
+                    store.refreshFromStore()
+                } label: {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.title3)
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+                .help("刷新同步")
+                .accessibilityLabel("刷新同步")
+
+                Button {
                     isInputFocused = true
                 } label: {
                     Image(systemName: "plus.circle")
@@ -197,7 +208,7 @@ struct TaskPopoverView: View {
 
     private var scopeTabBar: some View {
         HStack(spacing: 4) {
-            ForEach(TaskTimeScope.allCases) { scope in
+            ForEach(TaskTimeScope.displayOrder) { scope in
                 scopeTabButton(scope: scope, isSelected: selectedScope == scope)
             }
             scopeTabButton(label: "完成", icon: "checkmark.circle", color: .green, isSelected: selectedScope == nil) {
@@ -267,11 +278,6 @@ struct TaskPopoverView: View {
                 onToggleCategory: {
                     withAnimation(.easeInOut(duration: 0.15)) {
                         store.toggleCategory(id: task.id)
-                    }
-                },
-                onTogglePin: {
-                    withAnimation(.spring(response: 0.25, dampingFraction: 0.75)) {
-                        store.togglePin(id: task.id)
                     }
                 },
                 onUpdateTitle: { newTitle in
