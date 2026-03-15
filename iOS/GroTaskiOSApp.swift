@@ -4,6 +4,7 @@ import UIKit
 @main
 struct GroTaskiOSApp: App {
     @UIApplicationDelegateAdaptor(AppDelegateiOS.self) var appDelegate
+    @Environment(\.scenePhase) private var scenePhase
     let store: TaskStore
 
     init() {
@@ -14,6 +15,14 @@ struct GroTaskiOSApp: App {
     var body: some Scene {
         WindowGroup {
             TaskListView(store: store)
+                .onAppear {
+                    store.refreshFromStore()
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    if newPhase == .active {
+                        store.refreshFromStore()
+                    }
+                }
         }
     }
 }

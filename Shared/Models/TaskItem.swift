@@ -44,6 +44,9 @@ enum TaskTimeScope: Int, CaseIterable, Identifiable, Codable {
 
     var id: Int { rawValue }
 
+    /// Tab 栏显示顺序：今天、随时、快速、将来
+    static let displayOrder: [TaskTimeScope] = [.today, .anytime, .quick, .someday]
+
     var label: String {
         switch self {
         case .quick:   return "快速"

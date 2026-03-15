@@ -24,6 +24,15 @@ struct TaskListView: View {
                     .padding(.bottom, 8)
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        store.refreshFromStore()
+                    } label: {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                    .accessibilityLabel("刷新同步")
+                }
+
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isInputFocused = true
@@ -190,13 +199,13 @@ struct TaskListView: View {
     private var scopeTabBar: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(TaskTimeScope.allCases) { scope in
+                ForEach(TaskTimeScope.displayOrder) { scope in
                     scopeTabButton(label: scope.label, icon: scope.symbolName, color: scope.color, isSelected: selectedScope == scope) {
                         selectedScope = scope
                         newTaskTimeScope = scope
                     }
                 }
-                scopeTabButton(label: "全部", icon: "list.bullet", color: .secondary, isSelected: selectedScope == nil) {
+                scopeTabButton(label: "完成", icon: "checkmark.circle", color: .green, isSelected: selectedScope == nil) {
                     selectedScope = nil
                 }
             }

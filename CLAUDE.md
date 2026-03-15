@@ -7,15 +7,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Regenerate Xcode project from project.yml (requires xcodegen)
 xcodegen generate
-
-# Run unit tests (macOS host)
-xcodebuild test -scheme GroTask -destination "platform=macOS"
-
-# Build macOS app
-xcodebuild build -scheme GroTask -configuration Debug
-
-# Build iOS app
-xcodebuild build -scheme GroTaskiOS -configuration Debug -destination "generic/platform=iOS"
 ```
 
 ## Architecture
